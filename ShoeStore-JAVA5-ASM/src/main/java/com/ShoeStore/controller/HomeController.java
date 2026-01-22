@@ -13,5 +13,3 @@ public class HomeController {
 	}
 
 }
-//HIHI
-//hihi

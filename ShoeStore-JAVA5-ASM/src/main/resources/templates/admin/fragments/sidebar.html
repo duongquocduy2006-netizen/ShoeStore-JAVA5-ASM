@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <aside th:fragment="sidebar" id="sidebar-wrapper">
+
+        <style>
+            /* Tổng thể Sidebar */
+            #sidebar-wrapper {
+                width: 280px;
+                min-height: 100vh;
+                background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+                color: #e5e7eb;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+                font-family: 'Segoe UI', sans-serif;
+                flex-shrink: 0;
+                z-index: 1000;
+            }
+
+            /* Phần Logo */
+            .sidebar-branding {
+                height: 80px;
+                display: flex;
+                align-items: center;
+                padding: 0 24px;
+                background: rgba(255,255,255,0.03);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .brand-logo i {
+                font-size: 28px;
+                color: #3b82f6;
+                filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+                margin-right: 12px;
+            }
+
+            .brand-name {
+                display: flex;
+                flex-direction: column;
+            }
+            .brand-name span {
+                font-size: 18px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                background: -webkit-linear-gradient(#fff, #94a3b8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .brand-name small {
+                font-size: 11px;
+                color: #64748b;
+                font-weight: 600;
+            }
+
+            /* Phần Menu */
+            .sidebar-nav {
+                padding: 20px 16px;
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+
+            .nav-label {
+                font-size: 11px;
+                font-weight: 700;
+                color: #475569;
+                text-transform: uppercase;
+                margin: 24px 0 12px 12px;
+                letter-spacing: 0.8px;
+            }
+
+            .nav-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .nav-item {
+                margin-bottom: 6px;
+            }
+
+            /* Link Menu */
+            .nav-link {
+                display: flex;
+                align-items: center;
+                padding: 12px 16px;
+                color: #9ca3af;
+                text-decoration: none;
+                border-radius: 12px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                font-size: 14px;
+                font-weight: 500;
+                border-left: 3px solid transparent;
+            }
+
+            .nav-link i {
+                font-size: 20px;
+                width: 24px;
+                margin-right: 12px;
+                text-align: center;
+                transition: transform 0.3s;
+            }
+
+            /* Hiệu ứng Hover */
+            .nav-link:hover {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                padding-left: 20px;
+            }
+
+            .nav-link:hover i {
+                transform: scale(1.2);
+                color: #60a5fa;
+            }
+
+            /* Trạng thái Active (Được kích hoạt bởi JS) */
+            .nav-link.active {
+                background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+                color: #60a5fa;
+                border-left-color: #3b82f6;
+            }
+
+            .nav-link.active i {
+                color: #3b82f6;
+            }
+
+            /* Badge số lượng */
+            .badge-new {
+                margin-left: auto;
+                background: #ef4444;
+                color: white;
+                font-size: 10px;
+                font-weight: 700;
+                padding: 2px 8px;
+                border-radius: 20px;
+                box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+            }
+
+            /* Nút Logout */
+            .logout-wrapper {
+                padding: 16px;
+                border-top: 1px solid rgba(255,255,255,0.05);
+            }
+            .btn-logout {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                padding: 12px;
+                background: rgba(239, 68, 68, 0.1);
+                color: #fca5a5;
+                text-decoration: none;
+                border-radius: 10px;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+            .btn-logout:hover {
+                background: #ef4444;
+                color: white;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            }
+            .btn-logout i { margin-right: 8px; }
+        </style>
+
+        <div class="sidebar-branding">
+            <div class="brand-logo">
+                <i class="bi bi-box-seam-fill"></i>
+            </div>
+            <div class="brand-name">
+                <span>ShoeStore</span>
+                <small>Admin Dashboard</small>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Kinh doanh</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a th:href="@{/admin/dashboard}" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Tổng quan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/products}" class="nav-link">
+                        <i class="bi bi-bag-fill"></i>
+                        <span>Sản phẩm</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/orders}" class="nav-link">
+                        <i class="bi bi-cart-check"></i>
+                        <span>Đơn hàng</span>
+                        <span class="badge-new">9+</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/customers}" class="nav-link">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-label">Hệ thống</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a th:href="@{/admin/settings}" class="nav-link">
+                        <i class="bi bi-gear-fill"></i>
+                        <span>Cài đặt</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-wrapper">
+            <a th:href="@{/logout}" class="btn-logout">
+                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Lấy đường dẫn hiện tại (ví dụ: /admin/products)
+                const currentPath = window.location.pathname;
+                
+                // Tìm tất cả các link trong menu
+                const menuLinks = document.querySelectorAll('.nav-link');
+                
+                menuLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    
+                    // Nếu link trùng với trang hiện tại thì thêm class active
+                    if (currentPath === href || (href !== '/admin/dashboard' && currentPath.startsWith(href))) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        </script>
+
+    </aside>
+
+</body>
+</html>
