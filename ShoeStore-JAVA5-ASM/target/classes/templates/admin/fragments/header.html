@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    
+    <header th:fragment="header" id="page-header">
+        
+        <style>
+            #page-header {
+                height: 70px;
+                background-color: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                display: flex;
+                align-items: center;
+                justify-content: space-between; /* Chia đều 2 bên */
+                padding: 0 30px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                position: sticky;
+                top: 0;
+                z-index: 900;
+            }
+
+            .header-left h2 {
+                font-size: 20px;
+                font-weight: 700;
+                color: #1f2937;
+                margin: 0;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .notification-btn {
+                position: relative;
+                font-size: 20px;
+                color: #6b7280;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+            .notification-btn:hover { color: #3b82f6; }
+            
+            .dot-badge {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                width: 8px;
+                height: 8px;
+                background-color: #ef4444;
+                border-radius: 50%;
+                border: 2px solid white;
+            }
+
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+                padding: 5px 10px;
+                border-radius: 8px;
+                transition: background 0.2s;
+            }
+            .user-profile:hover { background-color: #f3f4f6; }
+
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+                background-color: #dbeafe;
+                color: #2563eb;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .user-info {
+                display: flex;
+                flex-direction: column;
+                line-height: 1.2;
+            }
+            .user-name { font-size: 14px; font-weight: 600; color: #374151; }
+            .user-role { font-size: 11px; color: #9ca3af; }
+        </style>
+
+        <div class="header-left">
+            </div>
+
+        <div class="header-right">
+            <div class="notification-btn">
+                <i class="bi bi-bell"></i>
+                <span class="dot-badge"></span>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-info">
+                    <span class="user-name">Quản Trị Viên</span>
+                    <span class="user-role">Super Admin</span>
+                </div>
+                <div class="user-avatar">AD</div>
+            </div>
+        </div>
+
+    </header>
+
+</body>
+</html>
