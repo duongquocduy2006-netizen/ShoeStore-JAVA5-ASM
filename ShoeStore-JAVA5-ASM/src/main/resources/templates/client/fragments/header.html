@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <header th:fragment="header" class="custom-header">
@@ -10,27 +11,23 @@
         /* ================= 1. CẤU HÌNH CHUNG ================= */
         :root {
             --primary-color: #000000;
-            --accent-color: #d32f2f; /* Màu đỏ Sale */
-            --highlight-color: #ffc107; /* Màu vàng New */
+            --accent-color: #d32f2f;
+            --highlight-color: #ffc107;
             --text-gray: #555555;
             --bg-light: #f8f9fa;
         }
 
-        /* Lưu ý: Font-family nên được set ở body của trang chủ (index.html), 
-           nhưng set ở đây để đảm bảo header luôn nhận font đúng */
         .custom-header {
             font-family: 'Poppins', sans-serif;
             background: #fff;
             border-bottom: 1px solid #eaeaea;
+            position: relative; /* Đảm bảo z-index hoạt động đúng */
+            z-index: 1001; /* Cao hơn nội dung trang */
         }
 
-        .custom-header a { 
-            text-decoration: none; 
-        }
+        .custom-header a { text-decoration: none; }
 
         /* ================= 2. TOP HEADER ================= */
-
-        /* --- LOGO --- */
         .brand-logo {
             font-weight: 800;
             font-size: 28px;
@@ -40,15 +37,10 @@
             transition: transform 0.3s ease;
             margin: 0;
         }
-        .brand-logo:hover {
-            transform: scale(1.05);
-        }
+        .brand-logo:hover { transform: scale(1.05); }
 
         /* --- SEARCH BOX --- */
-        .search-wrapper {
-            position: relative;
-        }
-        
+        .search-wrapper { position: relative; }
         .search-wrapper .input-group {
             background: var(--bg-light);
             border-radius: 50px;
@@ -57,13 +49,11 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-
         .search-wrapper .input-group:focus-within {
             background: #fff;
             border-color: var(--primary-color);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         .search-input {
             border: none;
             background: transparent;
@@ -71,10 +61,7 @@
             padding-left: 15px;
             color: #333;
         }
-        .search-input:focus {
-            box-shadow: none;
-            background: transparent;
-        }
+        .search-input:focus { box-shadow: none; background: transparent; }
         
         .search-btn {
             border-radius: 50% !important;
@@ -84,18 +71,13 @@
             color: #333;
             border: 1px solid #eee;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
-        
         .search-wrapper .input-group:focus-within .search-btn {
-            background: var(--primary-color);
-            color: #fff;
-            border-color: var(--primary-color);
+            background: var(--primary-color); color: #fff; border-color: var(--primary-color);
         }
 
-        /* --- ICONS GROUP --- */
+        /* --- ICONS GROUP & DROPDOWN --- */
         .icon-item {
             color: #333;
             font-size: 20px;
@@ -107,12 +89,13 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            cursor: pointer;
         }
 
-        .icon-item:hover {
+        .icon-item:hover, .icon-item[aria-expanded="true"] {
             background-color: #f0f0f0;
-            color: var(--accent-color);
-            transform: translateY(-3px);
+            color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         .cart-badge {
@@ -122,14 +105,85 @@
             padding: 4px 6px;
         }
 
+        /* --- SỬA LỖI DROPDOWN --- */
+        .dropdown {
+            position: relative; /* Quan trọng để menu con định vị theo cha */
+        }
+
+        .user-dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2); /* Bóng đậm hơn chút để nổi */
+            border-radius: 8px;
+            padding: 10px 0;
+            min-width: 220px;
+            margin-top: 10px !important;
+            
+            /* FIX LỖI BỊ CHE */
+            z-index: 9999 !important; /* Đảm bảo nó luôn nằm trên cùng */
+            position: absolute;
+        }
+        
+        .user-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 5px rgba(0,0,0,0.04);
+            z-index: 1; /* Mũi tên nằm trên background */
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 2; /* Nội dung nằm trên mũi tên */
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            padding-left: 25px;
+        }
+        
+        .dropdown-item.logout-btn:hover {
+            background-color: #fff5f5;
+            color: var(--accent-color);
+        }
+        
+        /* Button logout trong suốt để giống thẻ a */
+        .btn-logout-transparent {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.2s;
+        }
+        .btn-logout-transparent:hover {
+            background-color: #fff5f5;
+            color: var(--accent-color);
+            padding-left: 25px;
+        }
+
+        .dropdown-divider { margin: 5px 0; border-color: #eee; }
+
         /* ================= 3. NAVBAR (MENU) ================= */
         .custom-navbar {
             background-color: #000 !important;
             padding: 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; 
+            z-index: 1000; /* Thấp hơn dropdown menu (9999) */
         }
 
         .nav-link-custom {
@@ -141,43 +195,22 @@
             opacity: 0.8;
             transition: all 0.3s ease;
         }
-
-        .nav-link-custom:hover, 
-        .nav-link-custom:focus {
-            opacity: 1;
-            color: #fff;
-        }
-
-        /* Hiệu ứng gạch chân */
+        .nav-link-custom:hover, .nav-link-custom:focus { opacity: 1; color: #fff; }
         .nav-link-custom::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0%;
-            height: 4px;
-            background-color: var(--accent-color);
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0%; height: 4px; background-color: var(--accent-color);
             transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform: translateX(-50%);
         }
+        .nav-link-custom:hover::after { width: 100%; }
 
-        .nav-link-custom:hover::after {
-            width: 100%;
-        }
-
-        /* Màu riêng cho Sale & Hàng mới */
         .nav-link-custom.text-warning { color: var(--highlight-color) !important; opacity: 1; }
         .nav-link-custom.text-warning::after { background-color: var(--highlight-color); }
-
         .nav-link-custom.text-danger { color: #ff4d4d !important; opacity: 1; }
         .nav-link-custom.text-danger::after { background-color: #ff4d4d; }
 
-        /* Responsive */
         @media (max-width: 991px) {
-            .nav-link-custom {
-                padding: 15px 0 !important;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
+            .nav-link-custom { padding: 15px 0 !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
             .nav-link-custom::after { display: none; }
             .search-wrapper { margin-top: 15px; }
         }
@@ -205,13 +238,43 @@
 
             <div class="col-md-4 text-center text-md-end">
                 <div class="icon-group d-inline-flex gap-4 align-items-center">
-                    <a href="#" class="icon-item" title="Tài khoản"><i class="fa fa-user"></i></a>
+                    
+                    <div class="dropdown">
+                        <a href="#" class="icon-item" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Tài khoản">
+                            <i class="fa fa-user"></i>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu animate__animated animate__fadeIn" aria-labelledby="userDropdown">
+                            
+                            <div sec:authorize="!isAuthenticated()">
+                                <li><a class="dropdown-item" th:href="@{/login}"><i class="fa fa-sign-in me-2"></i> Đăng nhập</a></li>
+                                <li><a class="dropdown-item" th:href="@{/register}"><i class="fa fa-user-plus me-2"></i> Đăng ký</a></li>
+                            </div>
+
+                            <div sec:authorize="isAuthenticated()">
+                                <li>
+                                    <span class="dropdown-item-text text-muted" style="font-size: 12px; padding: 10px 20px; display: block;">
+                                        Xin chào, <b sec:authentication="name" style="color: #000;">User</b>
+                                    </span>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/profile}"><i class="fa fa-id-card-o me-2"></i> Hồ sơ của tôi</a></li>
+                                <li><a class="dropdown-item" th:href="@{/orders}"><i class="fa fa-list-alt me-2"></i> Đơn mua</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form th:action="@{/logout}" method="post" style="margin: 0; padding: 0;">
+                                        <button type="submit" class="btn-logout-transparent">
+                                            <i class="fa fa-sign-out me-2"></i> Đăng xuất
+                                        </button>
+                                    </form>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
                     <a href="#" class="icon-item" title="Yêu thích"><i class="fa fa-heart"></i></a>
                     <a href="#" class="icon-item position-relative" title="Giỏ hàng">
                         <i class="fa fa-shopping-cart"></i>
-                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill">
-                            3
-                        </span>
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill">3</span>
                     </a>
                 </div>
             </div>

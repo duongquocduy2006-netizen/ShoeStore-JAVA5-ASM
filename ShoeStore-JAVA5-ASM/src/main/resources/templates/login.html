@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập | ShoeStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-main: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%); /* Nền Gradient đẹp */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-logo {
+            display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;
+        }
+        .logo-icon {
+            font-size: 40px; color: var(--primary); margin-bottom: 10px;
+        }
+        .brand-name { font-size: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
+        .brand-desc { color: var(--text-light); font-size: 14px; margin-top: 5px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-main); font-size: 14px; }
+        .form-control {
+            width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+            border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-options {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 13px;
+        }
+        .remember-me { display: flex; align-items: center; gap: 6px; color: var(--text-light); cursor: pointer; }
+        .forgot-link { color: var(--primary); text-decoration: none; font-weight: 500; }
+        .forgot-link:hover { text-decoration: underline; }
+
+        .btn-submit {
+            width: 100%; padding: 12px; background: var(--primary); color: white;
+            border: none; border-radius: 8px; font-weight: 600; font-size: 15px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        .divider {
+            margin: 24px 0; text-align: center; position: relative;
+        }
+        .divider::before {
+            content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: var(--border);
+        }
+        .divider span {
+            background: white; padding: 0 10px; position: relative; color: var(--text-light); font-size: 12px;
+        }
+
+        .btn-google {
+            width: 100%; padding: 10px; background: white; border: 1px solid var(--border);
+            border-radius: 8px; font-weight: 500; color: var(--text-main); font-size: 14px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.2s;
+        }
+        .btn-google:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+        .auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-light); }
+        .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="brand-logo">
+            <i class="bi bi-box-seam-fill logo-icon"></i>
+            <h1 class="brand-name">ShoeStore</h1>
+            <p class="brand-desc">Đăng nhập để tiếp tục mua sắm</p>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label class="form-label">Email hoặc Tên đăng nhập</label>
+                <input type="text" class="form-control" placeholder="user@example.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox"> Ghi nhớ đăng nhập
+                </label>
+                <a href="#" class="forgot-link">Quên mật khẩu?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Đăng Nhập</button>
+        </form>
+
+        <div class="divider"><span>Hoặc đăng nhập bằng</span></div>
+
+        <button class="btn-google">
+            <i class="bi bi-google"></i> Google
+        </button>
+
+        <div class="auth-footer">
+            Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a>
+        </div>
+    </div>
+
+</body>
+</html>
