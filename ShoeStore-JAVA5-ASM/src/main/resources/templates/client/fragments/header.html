@@ -4,7 +4,7 @@
 <body>
 
 <header th:fragment="header" class="custom-header">
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -21,13 +21,12 @@
             font-family: 'Poppins', sans-serif;
             background: #fff;
             border-bottom: 1px solid #eaeaea;
-            position: relative; /* Đảm bảo z-index hoạt động đúng */
-            z-index: 1001; /* Cao hơn nội dung trang */
+            position: relative;
+            z-index: 1001;
         }
 
         .custom-header a { text-decoration: none; }
 
-        /* ================= 2. TOP HEADER ================= */
         .brand-logo {
             font-weight: 800;
             font-size: 28px;
@@ -39,177 +38,132 @@
         }
         .brand-logo:hover { transform: scale(1.05); }
 
-        /* --- SEARCH BOX --- */
-        .search-wrapper { position: relative; }
+        /* ================= 2. NAVBAR (MENU) & MEGA MENU (Từ Dev_Long) ================= */
+        /* --- STYLE CHO DROP DOWN (MEGA MENU) --- */
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            padding: 40px 0;
+            z-index: 999;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .nav-item:hover .mega-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mega-content { display: flex; justify-content: space-between; }
+        .mega-column { flex: 1; padding: 0 15px; }
+        
+        .mega-column h5 {
+            color: #000; font-weight: 800; font-size: 15px;
+            text-transform: uppercase; margin-bottom: 20px;
+            border-bottom: 1px solid #eee; padding-bottom: 10px;
+        }
+
+        .mega-column ul { list-style: none; padding: 0; }
+        .mega-column ul li { margin-bottom: 8px; }
+        .mega-column ul li a {
+            color: #666; font-size: 13px; transition: 0.2s;
+            text-transform: uppercase; font-weight: 500;
+        }
+        .mega-column ul li a:hover { color: var(--accent-color); padding-left: 5px; }
+
+        /* ================= 3. USER DROPDOWN & SEARCH (Từ Dev) ================= */
         .search-wrapper .input-group {
             background: var(--bg-light);
             border-radius: 50px;
             padding: 5px;
             border: 2px solid transparent;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
         }
         .search-wrapper .input-group:focus-within {
-            background: #fff;
-            border-color: var(--primary-color);
+            background: #fff; border-color: var(--primary-color);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .search-input {
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            padding-left: 15px;
-            color: #333;
-        }
+        .search-input { border: none; background: transparent; font-size: 14px; padding-left: 15px; color: #333; }
         .search-input:focus { box-shadow: none; background: transparent; }
         
         .search-btn {
-            border-radius: 50% !important;
-            width: 40px;
-            height: 40px;
-            background: #fff;
-            color: #333;
-            border: 1px solid #eee;
-            transition: all 0.3s ease;
+            border-radius: 50% !important; width: 40px; height: 40px;
+            background: #fff; color: #333; border: 1px solid #eee;
             display: flex; align-items: center; justify-content: center;
         }
         .search-wrapper .input-group:focus-within .search-btn {
             background: var(--primary-color); color: #fff; border-color: var(--primary-color);
         }
 
-        /* --- ICONS GROUP & DROPDOWN --- */
         .icon-item {
-            color: #333;
-            font-size: 20px;
-            position: relative;
-            transition: all 0.3s ease;
-            width: 40px; 
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            cursor: pointer;
+            color: #333; font-size: 20px; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: 0.3s; cursor: pointer;
         }
-
         .icon-item:hover, .icon-item[aria-expanded="true"] {
-            background-color: #f0f0f0;
-            color: var(--primary-color);
-            transform: translateY(-2px);
+            background-color: #f0f0f0; color: var(--primary-color); transform: translateY(-2px);
         }
 
-        .cart-badge {
-            background-color: var(--accent-color) !important;
-            border: 2px solid #fff;
-            font-size: 10px;
-            padding: 4px 6px;
-        }
+        .cart-badge { background-color: var(--accent-color) !important; border: 2px solid #fff; font-size: 10px; padding: 4px 6px; }
 
-        /* --- SỬA LỖI DROPDOWN --- */
-        .dropdown {
-            position: relative; /* Quan trọng để menu con định vị theo cha */
-        }
-
+        /* --- USER DROPDOWN --- */
         .user-dropdown-menu {
-            border: none;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2); /* Bóng đậm hơn chút để nổi */
-            border-radius: 8px;
-            padding: 10px 0;
-            min-width: 220px;
-            margin-top: 10px !important;
-            
-            /* FIX LỖI BỊ CHE */
-            z-index: 9999 !important; /* Đảm bảo nó luôn nằm trên cùng */
-            position: absolute;
+            border: none; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            border-radius: 8px; padding: 10px 0; min-width: 220px;
+            margin-top: 10px !important; z-index: 9999 !important; position: absolute;
         }
-        
         .user-dropdown-menu::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            right: 20px;
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            transform: rotate(45deg);
-            box-shadow: -2px -2px 5px rgba(0,0,0,0.04);
-            z-index: 1; /* Mũi tên nằm trên background */
+            content: ''; position: absolute; top: -6px; right: 20px;
+            width: 12px; height: 12px; background: #fff;
+            transform: rotate(45deg); z-index: 1;
         }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            transition: all 0.2s;
-            position: relative;
-            z-index: 2; /* Nội dung nằm trên mũi tên */
-        }
-
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: var(--primary-color);
-            padding-left: 25px;
-        }
+        .dropdown-item { padding: 10px 20px; font-size: 14px; font-weight: 500; color: #555; position: relative; z-index: 2; }
+        .dropdown-item:hover { background-color: #f8f9fa; color: var(--primary-color); padding-left: 25px; }
         
-        .dropdown-item.logout-btn:hover {
-            background-color: #fff5f5;
-            color: var(--accent-color);
-        }
-        
-        /* Button logout trong suốt để giống thẻ a */
         .btn-logout-transparent {
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            transition: all 0.2s;
+            background: none; border: none; width: 100%; text-align: left;
+            padding: 10px 20px; font-size: 14px; font-weight: 500; color: #555; transition: all 0.2s;
         }
-        .btn-logout-transparent:hover {
-            background-color: #fff5f5;
-            color: var(--accent-color);
-            padding-left: 25px;
-        }
-
+        .btn-logout-transparent:hover { background-color: #fff5f5; color: var(--accent-color); padding-left: 25px; }
         .dropdown-divider { margin: 5px 0; border-color: #eee; }
 
-        /* ================= 3. NAVBAR (MENU) ================= */
+        /* ================= 4. NAVBAR STYLE ================= */
         .custom-navbar {
-            background-color: #000 !important;
-            padding: 0;
+            background-color: #000 !important; padding: 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            position: sticky; top: 0; 
-            z-index: 1000; /* Thấp hơn dropdown menu (9999) */
+            position: sticky; top: 0; z-index: 1000;
         }
-
+        .nav-item { position: static !important; }
+        
         .nav-link-custom {
-            color: #fff !important;
-            font-size: 14px;
-            letter-spacing: 1px;
-            padding: 20px 15px !important;
-            position: relative;
-            opacity: 0.8;
-            transition: all 0.3s ease;
+            color: #fff !important; font-size: 14px; letter-spacing: 1px;
+            padding: 20px 15px !important; position: relative; opacity: 0.8;
+            transition: all 0.3s ease; display: inline-block;
         }
-        .nav-link-custom:hover, .nav-link-custom:focus { opacity: 1; color: #fff; }
+        .nav-link-custom:hover { opacity: 1; }
         .nav-link-custom::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0%; height: 4px; background-color: var(--accent-color);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform: translateX(-50%);
+            content: ''; position: absolute; bottom: 0; left: 50%; width: 0%; height: 4px;
+            background-color: var(--accent-color); transition: all 0.3s; transform: translateX(-50%);
         }
         .nav-link-custom:hover::after { width: 100%; }
-
+        
         .nav-link-custom.text-warning { color: var(--highlight-color) !important; opacity: 1; }
         .nav-link-custom.text-warning::after { background-color: var(--highlight-color); }
         .nav-link-custom.text-danger { color: #ff4d4d !important; opacity: 1; }
         .nav-link-custom.text-danger::after { background-color: #ff4d4d; }
 
         @media (max-width: 991px) {
+            .mega-menu { position: relative; display: none; transform: none; }
+            .nav-item:hover .mega-menu { display: block; }
+            .mega-content { flex-direction: column; }
             .nav-link-custom { padding: 15px 0 !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
             .nav-link-custom::after { display: none; }
             .search-wrapper { margin-top: 15px; }
@@ -218,7 +172,6 @@
     
     <div class="container py-3">
         <div class="row align-items-center">
-            
             <div class="col-md-3 text-center text-md-start">
                 <a href="/" class="text-decoration-none">
                     <h2 class="brand-logo">SHOE STORE</h2>
@@ -229,9 +182,7 @@
                 <div class="search-wrapper">
                     <div class="input-group">
                         <input type="text" class="form-control search-input" placeholder="Tìm kiếm sneaker, giày chạy...">
-                        <button class="btn search-btn" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
+                        <button class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
@@ -245,7 +196,6 @@
                         </a>
                         
                         <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu animate__animated animate__fadeIn" aria-labelledby="userDropdown">
-                            
                             <div sec:authorize="!isAuthenticated()">
                                 <li><a class="dropdown-item" th:href="@{/login}"><i class="fa fa-sign-in me-2"></i> Đăng nhập</a></li>
                                 <li><a class="dropdown-item" th:href="@{/register}"><i class="fa fa-user-plus me-2"></i> Đăng ký</a></li>
@@ -258,7 +208,7 @@
                                     </span>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/profile}"><i class="fa fa-id-card-o me-2"></i> Hồ sơ của tôi</a></li>
+                                <li><a class="dropdown-item" th:href="@{/profile}"><i class="fa fa-id-card-o me-2"></i> Hồ sơ</a></li>
                                 <li><a class="dropdown-item" th:href="@{/orders}"><i class="fa fa-list-alt me-2"></i> Đơn mua</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
@@ -271,6 +221,7 @@
                             </div>
                         </ul>
                     </div>
+
                     <a href="#" class="icon-item" title="Yêu thích"><i class="fa fa-heart"></i></a>
                     <a href="#" class="icon-item position-relative" title="Giỏ hàng">
                         <i class="fa fa-shopping-cart"></i>
@@ -289,10 +240,56 @@
             
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav gap-2 text-uppercase fw-bold">
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Thương hiệu</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Nam</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Nữ</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Trẻ em</a></li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#">Thương hiệu <i class="fa fa-angle-down ms-1"></i></a>
+                        <div class="mega-menu">
+                            <div class="container">
+                                <div class="mega-content">
+                                    <div class="mega-column">
+                                        <ul>
+                                            <li><a href="#">TẤT CẢ</a></li>
+                                            <li><a href="#">NEW BALANCE</a></li>
+                                            <li><a href="#">CROCS</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <ul>
+                                            <li><a href="#">NIKE</a></li>
+                                            <li><a href="#">ASICS</a></li>
+                                            <li><a href="#">FILA</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <ul>
+                                            <li><a href="#">ADIDAS</a></li>
+                                            <li><a href="#">CONVERSE</a></li>
+                                            <li><a href="#">VANS</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#">Danh mục <i class="fa fa-angle-down ms-1"></i></a>
+                        <div class="mega-menu">
+                            <div class="container">
+                                <div class="mega-content">
+                                    <div class="mega-column">
+                                        <h5>Giày Nữ</h5>
+                                        <ul><li><a href="#">Thể Thao</a></li><li><a href="#">Sandal</a></li></ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <h5>Giày Nam</h5>
+                                        <ul><li><a href="#">Thể Thao</a></li><li><a href="#">Sandal</a></li></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
                     <li class="nav-item"><a class="nav-link nav-link-custom text-warning" href="#"><i class="fa fa-star me-1"></i>Hàng mới</a></li> 
                     <li class="nav-item"><a class="nav-link nav-link-custom text-danger" href="#"><i class="fa fa-fire me-1"></i>Sale</a></li> 
                     <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Cửa hàng</a></li>
