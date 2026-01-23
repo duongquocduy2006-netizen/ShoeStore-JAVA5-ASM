@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký | ShoeStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* --- CSS GIỐNG TRANG LOGIN --- */
+        :root { --primary: #4f46e5; --primary-hover: #4338ca; --text-main: #0f172a; --text-light: #64748b; --border: #e2e8f0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+        }
+        .auth-container {
+            background: white; width: 100%; max-width: 480px; /* Rộng hơn xíu */
+            padding: 40px; border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .brand-logo { text-align: center; margin-bottom: 25px; }
+        .brand-name { font-size: 24px; font-weight: 800; color: var(--text-main); }
+        .brand-desc { color: var(--text-light); font-size: 14px; margin-top: 5px; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-main); font-size: 14px; }
+        .form-control {
+            width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+            border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s;
+        }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .btn-submit {
+            width: 100%; padding: 12px; background: var(--primary); color: white; margin-top: 10px;
+            border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        .auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-light); }
+        .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="brand-logo">
+            <h1 class="brand-name">Tạo Tài Khoản Mới</h1>
+            <p class="brand-desc">Trở thành thành viên của ShoeStore ngay hôm nay</p>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" placeholder="Nguyễn Văn A">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Địa chỉ Email</label>
+                <input type="email" class="form-control" placeholder="email@example.com">
+            </div>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nhập lại mật khẩu</label>
+                    <input type="password" class="form-control" placeholder="••••••••">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="font-size: 13px; color: #64748b; display: flex; gap: 8px; cursor: pointer;">
+                    <input type="checkbox"> Tôi đồng ý với <a href="#" style="color: #4f46e5;">Điều khoản dịch vụ</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit">Đăng Ký Tài Khoản</button>
+        </form>
+
+        <div class="auth-footer">
+            Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay</a>
+        </div>
+    </div>
+
+</body>
+</html>
