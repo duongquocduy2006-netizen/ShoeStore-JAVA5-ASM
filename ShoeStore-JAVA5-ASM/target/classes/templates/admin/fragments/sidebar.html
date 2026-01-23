@@ -193,10 +193,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a th:href="@{/admin/categories}" class="nav-link">
+                       <i class="bi bi-collection-fill"></i>
+                        <span>Danh Mục</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a th:href="@{/admin/orders}" class="nav-link">
                         <i class="bi bi-cart-check"></i>
                         <span>Đơn hàng</span>
-                        <span class="badge-new">9+</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -205,7 +210,20 @@
                         <span>Khách hàng</span>
                     </a>
                 </li>
+                   <li class="nav-item">
+                    <a th:href="@{/admin/sale}" class="nav-link">
+                        <i class="bi bi-ticket-perforated-fill"></i>
+                        <span>Khuyến Mãi</span>
+                    </a>
+                </li>
+    			<li class="nav-item">
+                    <a th:href="@{/admin/promotions}" class="nav-link">
+                        <i class="bi bi-stars"></i>
+                        <span>Ưu Đãi</span>
+                    </a>
+                </li>
             </ul>
+            
 
             <div class="nav-label">Hệ thống</div>
             <ul class="nav-list">
