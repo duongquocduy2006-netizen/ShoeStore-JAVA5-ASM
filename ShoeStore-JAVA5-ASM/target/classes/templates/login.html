@@ -3,107 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng Nhập | ShoeStore</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
+        /* --- COPY VARIABLES & CORE STYLES --- */
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --text-main: #0f172a;
-            --text-light: #64748b;
-            --border: #e2e8f0;
+            --primary-color: #000000;      /* Màu đen chủ đạo */
+            --accent-color: #d32f2f;       /* Màu đỏ nhấn */
+            --text-main: #1a1a1a;
+            --text-light: #666666;
+            --bg-body: #f4f6f8;
+            --border-color: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%); /* Nền Gradient đẹp */
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .auth-container {
+        /* --- BACKGROUND BLOBS --- */
+        .ambient-blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.5; animation: moveBlob 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #e0e7ff; border-radius: 40% 60% 70% 30%; }
+        .blob-2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: #ffdde1; border-radius: 60% 40% 30% 70%; animation-delay: -5s; }
+        @keyframes moveBlob { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(30px, 30px) rotate(10deg); } }
+
+        /* --- BACK BUTTON --- */
+        .btn-back-home {
+            position: absolute;
+            top: 30px; left: 30px;
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--text-main);
+            font-weight: 600; font-size: 14px;
+            padding: 12px 24px;
             background: white;
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .btn-back-home:hover {
+            color: white; background: var(--primary-color);
+            transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        @media (max-width: 576px) { .btn-back-home { top: 20px; left: 20px; padding: 10px 15px; font-size: 13px; span { display: none; } } }
+
+        /* --- AUTH CONTAINER (GLASS) --- */
+        .auth-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%; max-width: 450px;
+            padding: 50px 40px;
+            border-radius: 24px;
+            border: 1px solid white;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            z-index: 1;
         }
 
-        .brand-logo {
-            display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;
-        }
-        .logo-icon {
-            font-size: 40px; color: var(--primary); margin-bottom: 10px;
-        }
-        .brand-name { font-size: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
-        .brand-desc { color: var(--text-light); font-size: 14px; margin-top: 5px; }
+        .brand-logo { text-align: center; margin-bottom: 35px; }
+        .logo-icon { font-size: 45px; color: var(--primary-color); margin-bottom: 10px; display: inline-block; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
+        .brand-name { font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -1px; text-transform: uppercase; }
+        .brand-desc { color: var(--text-light); font-size: 14px; margin-top: 5px; font-weight: 400; }
 
+        /* --- FORM ELEMENTS --- */
         .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-main); font-size: 14px; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-main); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
         .form-control {
-            width: 100%; padding: 12px 16px; border: 1px solid var(--border);
-            border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s;
+            width: 100%; padding: 14px 18px; 
+            border: 2px solid var(--border-color);
+            border-radius: 12px; 
+            font-size: 15px; font-family: 'Poppins', sans-serif;
+            outline: none; transition: 0.3s ease;
+            background: #ffffff; color: var(--text-main);
         }
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        .form-control:focus { 
+            border-color: var(--primary-color); 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); transform: translateY(-2px);
         }
+        .form-control::placeholder { color: #aaa; font-weight: 400; }
 
-        .form-options {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 13px;
-        }
-        .remember-me { display: flex; align-items: center; gap: 6px; color: var(--text-light); cursor: pointer; }
-        .forgot-link { color: var(--primary); text-decoration: none; font-weight: 500; }
-        .forgot-link:hover { text-decoration: underline; }
+        /* --- EXTRA OPTIONS (Remember / Forgot) --- */
+        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 13px; }
+        
+        .remember-me { display: flex; align-items: center; gap: 8px; color: var(--text-light); cursor: pointer; user-select: none; }
+        .remember-me input { width: 16px; height: 16px; accent-color: var(--primary-color); cursor: pointer; }
+        
+        .forgot-link { color: var(--text-main); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: 0.2s; }
+        .forgot-link:hover { color: var(--accent-color); border-color: var(--accent-color); }
 
+        /* --- SUBMIT BUTTON --- */
         .btn-submit {
-            width: 100%; padding: 12px; background: var(--primary); color: white;
-            border: none; border-radius: 8px; font-weight: 600; font-size: 15px;
-            cursor: pointer; transition: 0.2s;
+            width: 100%; padding: 15px; 
+            background: var(--primary-color); color: white;
+            border: none; border-radius: 50px; 
+            font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
-        .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        .divider {
-            margin: 24px 0; text-align: center; position: relative;
-        }
-        .divider::before {
-            content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: var(--border);
-        }
-        .divider span {
-            background: white; padding: 0 10px; position: relative; color: var(--text-light); font-size: 12px;
+        .btn-submit:hover { 
+            background: var(--accent-color); 
+            transform: translateY(-3px); box-shadow: 0 15px 30px rgba(211, 47, 47, 0.3);
         }
 
+        /* --- DIVIDER --- */
+        .divider { margin: 30px 0; text-align: center; position: relative; }
+        .divider::before { content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: #e0e0e0; }
+        .divider span { background: #fff; padding: 0 15px; position: relative; color: #999; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px; }
+
+        /* --- GOOGLE BUTTON --- */
         .btn-google {
-            width: 100%; padding: 10px; background: white; border: 1px solid var(--border);
-            border-radius: 8px; font-weight: 500; color: var(--text-main); font-size: 14px;
+            width: 100%; padding: 12px; 
+            background: white; border: 2px solid #eee;
+            border-radius: 12px; 
+            font-weight: 600; color: var(--text-main); font-size: 14px;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.2s;
+            transition: 0.3s;
         }
-        .btn-google:hover { background: #f8fafc; border-color: #cbd5e1; }
+        .btn-google:hover { 
+            border-color: var(--primary-color); 
+            background: #fff; transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
-        .auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-light); }
-        .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
-        .auth-footer a:hover { text-decoration: underline; }
+        /* --- FOOTER --- */
+        .auth-footer { text-align: center; margin-top: 30px; font-size: 14px; color: var(--text-light); }
+        .auth-footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; transition: 0.2s; }
+        .auth-footer a:hover { color: var(--accent-color); text-decoration: underline; }
 
     </style>
 </head>
 <body>
 
-    <div class="auth-container">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+
+    <a th:href="@{/}" class="btn-back-home animate__animated animate__fadeInLeft">
+        <i class="bi bi-arrow-left"></i> <span>Trang chủ</span>
+    </a>
+
+    <div class="auth-container animate__animated animate__zoomIn">
         <div class="brand-logo">
             <i class="bi bi-box-seam-fill logo-icon"></i>
-            <h1 class="brand-name">ShoeStore</h1>
-            <p class="brand-desc">Đăng nhập để tiếp tục mua sắm</p>
+            <h1 class="brand-name">Shoe Store</h1>
+            <p class="brand-desc">Chào mừng bạn quay trở lại</p>
         </div>
 
         <form>
             <div class="form-group">
-                <label class="form-label">Email hoặc Tên đăng nhập</label>
+                <label class="form-label">Tên đăng nhập / Email</label>
                 <input type="text" class="form-control" placeholder="user@example.com">
             </div>
 
@@ -114,15 +175,17 @@
 
             <div class="form-options">
                 <label class="remember-me">
-                    <input type="checkbox"> Ghi nhớ đăng nhập
+                    <input type="checkbox"> Ghi nhớ
                 </label>
                 <a href="#" class="forgot-link">Quên mật khẩu?</a>
             </div>
 
-            <button type="submit" class="btn-submit">Đăng Nhập</button>
+            <button type="submit" class="btn-submit">
+                Đăng Nhập <i class="bi bi-arrow-right-short" style="font-size: 20px; vertical-align: middle;"></i>
+            </button>
         </form>
 
-        <div class="divider"><span>Hoặc đăng nhập bằng</span></div>
+        <div class="divider"><span>Hoặc tiếp tục với</span></div>
 
         <button class="btn-google">
             <i class="bi bi-google"></i> Google
