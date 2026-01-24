@@ -3,92 +3,247 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
-<header th:fragment="header" class="custom-header">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<header th:fragment="header" class="cinematic-header">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* GIỮ NGUYÊN CSS CŨ CỦA BẠN (Đã ẩn bớt cho gọn) */
-        :root { --primary-color: #000000; --accent-color: #d32f2f; --highlight-color: #ffc107; --text-gray: #555555; --bg-light: #f8f9fa; }
-        .custom-header { font-family: 'Poppins', sans-serif; background: #fff; border-bottom: 1px solid #eaeaea; position: relative; z-index: 1001; }
-        .custom-header a { text-decoration: none; }
-        .brand-logo { font-weight: 800; font-size: 28px; color: var(--primary-color); letter-spacing: -1px; text-transform: uppercase; transition: transform 0.3s ease; margin: 0; }
-        .brand-logo:hover { transform: scale(1.05); }
-        .mega-menu { position: absolute; top: 100%; left: 0; width: 100%; background: #fff; visibility: hidden; opacity: 0; transform: translateY(15px); transition: all 0.3s ease; box-shadow: 0 15px 40px rgba(0,0,0,0.15); padding: 40px 0; z-index: 999; border-bottom: 3px solid var(--accent-color); }
-        .nav-item:hover .mega-menu { visibility: visible; opacity: 1; transform: translateY(0); }
-        .mega-content { display: flex; justify-content: space-between; }
-        .mega-column { flex: 1; padding: 0 15px; }
-        .mega-column h5 { color: #000; font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .mega-column ul { list-style: none; padding: 0; }
-        .mega-column ul li { margin-bottom: 8px; }
-        .mega-column ul li a { color: #666; font-size: 13px; transition: 0.2s; text-transform: uppercase; font-weight: 500; }
-        .mega-column ul li a:hover { color: var(--accent-color); padding-left: 5px; }
-        .search-wrapper .input-group { background: var(--bg-light); border-radius: 50px; padding: 5px; border: 2px solid transparent; transition: all 0.3s ease; }
-        .search-wrapper .input-group:focus-within { background: #fff; border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .search-input { border: none; background: transparent; font-size: 14px; padding-left: 15px; color: #333; }
-        .search-input:focus { box-shadow: none; background: transparent; }
-        .search-btn { border-radius: 50% !important; width: 40px; height: 40px; background: #fff; color: #333; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; }
-        .search-wrapper .input-group:focus-within .search-btn { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
-        .icon-item { color: #333; font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; cursor: pointer; }
-        .icon-item:hover, .icon-item[aria-expanded="true"] { background-color: #f0f0f0; color: var(--primary-color); transform: translateY(-2px); }
-        .cart-badge { background-color: var(--accent-color) !important; border: 2px solid #fff; font-size: 10px; padding: 4px 6px; }
+        /* --- CINEMATIC THEME VARIABLES --- */
+        :root {
+            --cine-bg: #050505;          /* Đen tuyền */
+            --cine-surface: #121212;     /* Đen nhám cho menu */
+            --cine-accent: #e50914;      /* Đỏ điện ảnh (giống Netflix) */
+            --cine-text: #e0e0e0;        /* Trắng khói */
+            --cine-text-muted: #9ca3af;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glow-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+            --transition: cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+        }
+
+        /* Reset & Base */
+        .cinematic-header {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cine-bg);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 1001;
+            color: var(--cine-text);
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        /* --- TOP BAR: LOGO & SEARCH --- */
+        .brand-logo {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            position: relative;
+        }
         
-        /* CSS DROPDOWN MỚI */
-        .user-dropdown-menu { border: none; box-shadow: 0 5px 25px rgba(0,0,0,0.2); border-radius: 8px; padding: 10px 0; min-width: 220px; margin-top: 10px !important; z-index: 9999 !important; position: absolute; }
-        .user-dropdown-menu::before { content: ''; position: absolute; top: -6px; right: 20px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); z-index: 1; }
-        .dropdown-item { padding: 10px 20px; font-size: 14px; font-weight: 500; color: #555; position: relative; z-index: 2; }
-        .dropdown-item:hover { background-color: #f8f9fa; color: var(--primary-color); padding-left: 25px; }
-        .btn-logout-transparent { background: none; border: none; width: 100%; text-align: left; padding: 10px 20px; font-size: 14px; font-weight: 500; color: #555; transition: all 0.2s; }
-        .btn-logout-transparent:hover { background-color: #fff5f5; color: var(--accent-color); padding-left: 25px; }
-        .dropdown-divider { margin: 5px 0; border-color: #eee; }
-        
-        /* NAVBAR STYLE */
-        .custom-navbar { background-color: #000 !important; padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; }
-        .nav-item { position: static !important; }
-        .nav-link-custom { color: #fff !important; font-size: 14px; letter-spacing: 1px; padding: 20px 15px !important; position: relative; opacity: 0.8; transition: all 0.3s ease; display: inline-block; }
-        .nav-link-custom:hover { opacity: 1; }
-        .nav-link-custom::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0%; height: 4px; background-color: var(--accent-color); transition: all 0.3s; transform: translateX(-50%); }
+        .brand-logo span { color: var(--cine-accent); text-shadow: var(--glow-shadow); }
+
+        /* Cinematic Search Bar */
+        .search-wrapper .input-group {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px; /* Bo góc vuông vức hơn cho nam tính */
+            padding: 5px 15px;
+            transition: var(--transition);
+        }
+
+        .search-wrapper .input-group:focus-within {
+            background: #000;
+            border-color: var(--cine-accent);
+            box-shadow: var(--glow-shadow);
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            padding-left: 10px;
+        }
+        .search-input::placeholder { color: #555; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+        .search-input:focus { background: transparent; box-shadow: none; color: #fff; }
+
+        .search-btn {
+            background: transparent;
+            color: #777;
+            border: none;
+            transition: var(--transition);
+        }
+        .search-wrapper .input-group:focus-within .search-btn { color: var(--cine-accent); }
+
+        /* Icons Group */
+        .icon-item {
+            color: var(--cine-text-muted);
+            font-size: 18px;
+            width: 45px; height: 45px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .icon-item:hover, .dropdown:hover .icon-item {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--glass-border);
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .cart-badge {
+            background-color: var(--cine-accent) !important;
+            box-shadow: var(--glow-shadow);
+            border: 2px solid var(--cine-bg);
+        }
+
+        /* --- NAVBAR --- */
+        .custom-navbar {
+            background: #000 !important; /* Đen tuyệt đối */
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .nav-link-custom {
+            color: #bbb !important;
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 20px 25px !important;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link-custom:hover, .nav-item:hover .nav-link-custom {
+            color: #fff !important;
+            text-shadow: 0 0 10px rgba(255,255,255,0.4);
+        }
+
+        /* Hiệu ứng gạch chân Laser */
+        .nav-link-custom::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0%; height: 2px;
+            background-color: var(--cine-accent);
+            box-shadow: var(--glow-shadow);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
         .nav-link-custom:hover::after { width: 100%; }
-        .nav-link-custom.text-warning { color: var(--highlight-color) !important; opacity: 1; }
-        .nav-link-custom.text-warning::after { background-color: var(--highlight-color); }
-        .nav-link-custom.text-danger { color: #ff4d4d !important; opacity: 1; }
-        .nav-link-custom.text-danger::after { background-color: #ff4d4d; }
+
+        /* Highlight Colors */
+        .text-warning { color: #ffd700 !important; }
+        .text-danger { color: var(--cine-accent) !important; }
+
+        /* --- MEGA MENU (DARK MODE) --- */
+        .mega-menu {
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: var(--cine-surface); /* Nền tối */
+            visibility: hidden; opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            border-top: 1px solid var(--cine-accent);
+            padding: 50px 0;
+            z-index: 999;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+
+        .nav-item:hover .mega-menu { visibility: visible; opacity: 1; transform: translateY(0); }
+
+        .mega-column h5 {
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .mega-column ul li a {
+            color: #888;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+
+        .mega-column ul li a:hover {
+            color: var(--cine-accent);
+            transform: translateX(10px); /* Hiệu ứng trượt sang phải */
+            text-shadow: var(--glow-shadow);
+        }
+
+        /* --- USER DROPDOWN (DARK MODE) --- */
+        .user-dropdown-menu {
+            background: var(--cine-surface);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            margin-top: 15px !important;
+            padding: 0;
+            overflow: hidden;
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .dropdown:hover .user-dropdown-menu { display: block; }
+
+        .user-dropdown-menu::before { background: var(--cine-surface); border-top: 1px solid var(--glass-border); border-left: 1px solid var(--glass-border); }
+
+        .dropdown-item { color: #ccc; padding: 12px 25px; font-weight: 400; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .dropdown-item:hover { background: rgba(255,255,255,0.05); color: #fff; border-left: 3px solid var(--cine-accent); padding-left: 22px; }
+        
+        .dropdown-item-text { color: #777 !important; text-align: center; background: #000; padding: 15px !important; }
+        .dropdown-item-text b { color: #fff !important; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
+
+        .dropdown-divider { border-color: var(--glass-border); margin: 0; }
+        
+        .btn-logout-transparent { color: #ccc; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; padding: 12px 25px; }
+        .btn-logout-transparent:hover { background: rgba(229, 9, 20, 0.1); color: var(--cine-accent); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Mobile adjustment */
         @media (max-width: 991px) {
-            .mega-menu { position: relative; display: none; transform: none; }
-            .nav-item:hover .mega-menu { display: block; }
-            .mega-content { flex-direction: column; }
-            .nav-link-custom { padding: 15px 0 !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .nav-link-custom::after { display: none; }
-            .search-wrapper { margin-top: 15px; }
+            .nav-link-custom { padding: 15px 0 !important; border-bottom: 1px solid var(--glass-border); }
+            .mega-menu { position: relative; background: #000; padding: 20px; box-shadow: none; border: none; }
         }
     </style>
     
-    <div class="container py-3">
+    <div class="container py-4">
         <div class="row align-items-center">
             <div class="col-md-3 text-center text-md-start">
                 <a href="/" class="text-decoration-none">
-                    <h2 class="brand-logo">SHOE STORE</h2>
+                    <h2 class="brand-logo">Shoe<span>Store</span></h2>
                 </a>
             </div>
 
             <div class="col-md-5 my-3 my-md-0">
                 <div class="search-wrapper">
                     <div class="input-group">
-                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sneaker, giày chạy...">
+                        <input type="text" class="form-control search-input" placeholder="Search for style...">
                         <button class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4 text-center text-md-end">
-                <div class="icon-group d-inline-flex gap-4 align-items-center">
+                <div class="icon-group d-inline-flex gap-3 align-items-center">
                     
                     <div class="dropdown">
-                        <a href="#" class="icon-item" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Tài khoản">
+                        <a href="#" class="icon-item" id="userDropdown">
                             <i class="fa fa-user"></i>
                         </a>
-                        
-                        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu animate__animated animate__fadeIn" aria-labelledby="userDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userDropdown">
                             <div sec:authorize="!isAuthenticated()">
                                 <li><a class="dropdown-item" th:href="@{/login}"><i class="fa fa-sign-in me-2"></i> Đăng nhập</a></li>
                                 <li><a class="dropdown-item" th:href="@{/register}"><i class="fa fa-user-plus me-2"></i> Đăng ký</a></li>
@@ -96,20 +251,19 @@
 
                             <div sec:authorize="isAuthenticated()">
                                 <li>
-                                    <span class="dropdown-item-text text-muted" style="font-size: 12px; padding: 10px 20px; display: block;">
-                                        Xin chào, <b sec:authentication="name" style="color: #000;">User</b>
+                                    <span class="dropdown-item-text">
+                                        Hello, <b sec:authentication="name">User</b>
                                     </span>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                
                                 <li><a class="dropdown-item" th:href="@{/profile}"><i class="fa fa-id-card-o me-2"></i> Hồ sơ</a></li>
-                                <li><a class="dropdown-item" th:href="@{/orders}"><i class="fa fa-list-alt me-2"></i> Đơn mua</a></li>
-                                <li><a class="dropdown-item" th:href="@{/change-password}"><i class="fa fa-key me-2"></i> Đổi mật khẩu</a></li>
+                                <li><a class="dropdown-item" th:href="@{/orders}"><i class="fa fa-box-open me-2"></i> Đơn hàng</a></li>
+                                <li><a class="dropdown-item" th:href="@{/change-password}"><i class="fa fa-key me-2"></i> Mật khẩu</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <form th:action="@{/logout}" method="post" style="margin: 0; padding: 0;">
-                                        <button type="submit" class="btn-logout-transparent">
-                                            <i class="fa fa-sign-out me-2"></i> Đăng xuất
+                                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                        <button type="submit" class="btn-logout-transparent w-100 text-start">
+                                            <i class="fa fa-power-off me-2"></i> Đăng xuất
                                         </button>
                                     </form>
                                 </li>
@@ -117,8 +271,8 @@
                         </ul>
                     </div>
 
-                    <a href="#" class="icon-item" title="Yêu thích"><i class="fa fa-heart"></i></a>
-                    <a href="#" class="icon-item position-relative" title="Giỏ hàng">
+                    <a th:href="@{/favourites}" class="icon-item" title="Yêu thích"><i class="fa fa-heart"></i></a>
+                    <a th:href="@{/cart}" class="icon-item position-relative" title="Giỏ hàng">
                         <i class="fa fa-shopping-cart"></i>
                         <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill">3</span>
                     </a>
@@ -127,22 +281,89 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black custom-navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav gap-2 text-uppercase fw-bold">
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Thương hiệu <i class="fa fa-angle-down ms-1"></i></a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Danh mục <i class="fa fa-angle-down ms-1"></i></a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom text-warning" href="#"><i class="fa fa-star me-1"></i>Hàng mới</a></li> 
-                    <li class="nav-item"><a class="nav-link nav-link-custom text-danger" href="#"><i class="fa fa-fire me-1"></i>Sale</a></li> 
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Cửa hàng</a></li>
+                <ul class="navbar-nav gap-3">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#">Thương hiệu <i class="fa fa-angle-down ms-1" style="font-size: 10px;"></i></a>
+                        <div class="mega-menu">
+                            <div class="container">
+                                <div class="mega-content d-flex justify-content-center gap-5">
+                                    <div class="mega-column">
+                                        <h5>Nike</h5>
+                                        <ul>
+                                            <li><a href="#">Air Force 1</a></li>
+                                            <li><a href="#">Air Jordan</a></li>
+                                            <li><a href="#">Dunk Low</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <h5>Adidas</h5>
+                                        <ul>
+                                            <li><a href="#">Ultraboost</a></li>
+                                            <li><a href="#">Yeezy</a></li>
+                                            <li><a href="#">Forum</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <h5>New Balance</h5>
+                                        <ul>
+                                            <li><a href="#">NB 550</a></li>
+                                            <li><a href="#">NB 530</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#">Danh mục <i class="fa fa-angle-down ms-1" style="font-size: 10px;"></i></a>
+                        <div class="mega-menu">
+                            <div class="container">
+                                <div class="mega-content d-flex justify-content-center gap-5">
+                                    <div class="mega-column">
+                                        <h5>Nam</h5>
+                                        <ul>
+                                            <li><a href="#">Sneaker</a></li>
+                                            <li><a href="#">Chạy bộ</a></li>
+                                            <li><a href="#">Bóng rổ</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <h5>Nữ</h5>
+                                        <ul>
+                                            <li><a href="#">Lifestyle</a></li>
+                                            <li><a href="#">Gym & Training</a></li>
+                                            <li><a href="#">Sandal</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mega-column">
+                                        <h5>Accessories</h5>
+                                        <ul>
+                                            <li><a href="#">Socks</a></li>
+                                            <li><a href="#">Shoe Care</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link nav-link-custom text-warning" th:href="@{/new-arrivals}"><i class="fa fa-star me-1"></i>Hàng mới</a></li> 
+                    <li class="nav-item"><a class="nav-link nav-link-custom text-danger" th:href="@{/flash-sale}"><i class="fa fa-fire me-1"></i>Sale Sốc</a></li> 
+                    <li class="nav-item"><a class="nav-link nav-link-custom" th:href="@{/shop}">Cửa hàng</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </header>
 </body>
 </html>
