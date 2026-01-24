@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Khuyến mãi Shop | ShoeStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 16px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); font-size: 14px; }
+        
+        .admin-wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - 280px); }
+        .content-body { padding: 30px; }
+
+        /* Header */
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-primary-custom {
+            background: var(--primary); color: white; border: none; padding: 10px 20px;
+            border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: 0.2s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        .btn-primary-custom:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex; gap: 12px; margin-bottom: 25px;
+        }
+        .search-box {
+            position: relative; flex-grow: 1;
+        }
+        .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+        .search-box input {
+            width: 100%; padding: 10px 10px 10px 35px; border-radius: 10px;
+            border: 1px solid #e2e8f0; outline: none; transition: 0.2s;
+        }
+        .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
+        /* Voucher Card - Thiết kế răng cưa */
+        .voucher-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; }
+        
+        .voucher-card {
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+            display: flex; position: relative; border: 1px solid #e2e8f0; box-shadow: var(--shadow);
+        }
+
+        /* Hiệu ứng đục lỗ voucher */
+        .voucher-card::before, .voucher-card::after {
+            content: ""; position: absolute; left: 102px; width: 16px; height: 16px;
+            background: var(--bg-body); border-radius: 50%; z-index: 1;
+        }
+        .voucher-card::before { top: -8px; border: 1px solid #e2e8f0; }
+        .voucher-card::after { bottom: -8px; border: 1px solid #e2e8f0; }
+
+        .v-left {
+            width: 110px; background: var(--primary); color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-right: 2px dashed #f1f5f9; padding: 20px;
+        }
+
+        .v-right { flex: 1; padding: 18px 20px 18px 25px; position: relative; }
+        
+        .v-shop { font-size: 10px; font-weight: 700; color: var(--primary); margin-bottom: 4px; display: block; }
+        .v-code { font-size: 18px; font-weight: 800; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .v-details { font-size: 12px; color: var(--text-light); margin-bottom: 15px; }
+        
+        .v-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 12px; border-top: 1px solid #f1f5f9;
+        }
+        .v-date { font-size: 11px; color: var(--secondary); display: flex; align-items: center; gap: 4px; }
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+        .badge-success { background: #dcfce7; color: #15803d; }
+
+        .btn-group { display: flex; gap: 8px; }
+        .btn-icon {
+            width: 30px; height: 30px; border-radius: 8px; border: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            color: var(--text-light); transition: 0.2s;
+        }
+        .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
+
+        /* Modal Simple */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none;
+            align-items: center; justify-content: center; z-index: 999;
+        }
+        .modal-box {
+            background: white; padding: 25px; border-radius: var(--radius); width: 500px;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; }
+        .form-control {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="main-content">
+            <header th:replace="~{admin/fragments/header :: header}"></header>
+
+            <main class="content-body">
+                <div class="page-header">
+                    <div>
+                        <h2 style="font-size: 24px; font-weight: 700;">Mã giảm giá Cửa hàng</h2>
+                        <p style="color: var(--text-light)">Quản lý danh sách voucher của các đối tác Shop.</p>
+                    </div>
+                    <button class="btn-primary-custom" onclick="openModal()">
+                        <i class="bi bi-plus-lg"></i> Tạo mã mới
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Tìm kiếm theo mã hoặc tên shop...">
+                    </div>
+                    <select class="search-box" style="width: 180px; padding: 0 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <option>Tất cả trạng thái</option>
+                        <option>Đang chạy</option>
+                        <option>Hết hạn</option>
+                    </select>
+                </div>
+
+                <div class="voucher-grid">
+                    
+                    <div class="voucher-card">
+                        <div class="v-left">
+                            <span style="font-size: 10px; opacity: 0.8; font-weight: 600;">GIẢM</span>
+                            <span style="font-size: 24px; font-weight: 800;">20%</span>
+                        </div>
+                        <div class="v-right">
+                            <span class="v-shop">NIKE OFFICIAL STORE</span>
+                            <div class="v-code">NIKE2026</div>
+                            <p class="v-details">Đơn tối thiểu: <b>1.200.000đ</b><br>Giảm tối đa: 200.000đ</p>
+                            
+                            <div class="v-footer">
+                                <div class="v-date">
+                                    <i class="bi bi-calendar3"></i> 01/01 - 30/01
+                                </div>
+                                <div class="btn-group">
+                                    <div class="btn-icon"><i class="bi bi-pencil-square"></i></div>
+                                    <div class="btn-icon" style="color: var(--danger);"><i class="bi bi-trash"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="voucher-card">
+                        <div class="v-left" style="background: var(--success);">
+                            <span style="font-size: 10px; opacity: 0.8; font-weight: 600;">GIẢM</span>
+                            <span style="font-size: 24px; font-weight: 800;">50K</span>
+                        </div>
+                        <div class="v-right">
+                            <span class="v-shop">ADIDAS NEIGHBORHOOD</span>
+                            <div class="v-code">ADI50KFREE</div>
+                            <p class="v-details">Đơn tối thiểu: <b>500.000đ</b><br>Áp dụng toàn gian hàng</p>
+                            
+                            <div class="v-footer">
+                                <div class="v-date">
+                                    <i class="bi bi-calendar3"></i> Hết hạn: 2 ngày tới
+                                </div>
+                                <div class="btn-group">
+                                    <div class="btn-icon"><i class="bi bi-pencil-square"></i></div>
+                                    <div class="btn-icon" style="color: var(--danger);"><i class="bi bi-trash"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalVoucher">
+        <div class="modal-box">
+            <h3 style="margin-bottom: 20px;">Thêm Voucher Mới</h3>
+            <div class="form-group">
+                <label>Chọn Shop</label>
+                <select class="form-control">
+                    <option>Chọn shop sở hữu...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Mã Voucher</label>
+                <input type="text" class="form-control" placeholder="Ví dụ: SHOPABC10">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label>Giá trị giảm</label>
+                    <input type="number" class="form-control" placeholder="100000">
+                </div>
+                <div class="form-group">
+                    <label>Đơn tối thiểu</label>
+                    <input type="number" class="form-control" placeholder="500000">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn-primary-custom" style="flex: 1; justify-content: center;">Lưu mã</button>
+                <button onclick="closeModal()" class="btn-primary-custom" style="flex: 1; justify-content: center; background: #e2e8f0; color: var(--text-main); box-shadow: none;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('modalVoucher').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modalVoucher').style.display = 'none'; }
+    </script>
+</body>
+</html>
