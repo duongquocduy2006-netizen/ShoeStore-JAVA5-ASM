@@ -182,6 +182,9 @@
         .card-info { padding: 15px; }
         .card-name a { color: #fff; text-decoration: none; font-weight: 500; }
         .card-price { color: var(--accent-red); font-family: 'Oswald', sans-serif; margin-top: 5px; }
+        
+        /* CUSTOM POLICY ICONS COLORS */
+        .policy-text { color: #e0e0e0; font-size: 13px; font-weight: 300; } /* Sáng hơn text-muted */
 
     </style>
 </head>
@@ -272,16 +275,17 @@
                 </div>
 
                 <div class="border-top border-secondary pt-3 mt-4">
-                    <div class="d-flex gap-3 text-muted small mb-2">
-                        <i class="fa fa-check-circle text-success"></i> Hàng chính hãng 100%
+                    <div class="d-flex align-items-center gap-3 text-light small mb-2 policy-text">
+                        <i class="fa fa-check-circle text-success fs-5"></i> <span>Hàng chính hãng 100%</span>
                     </div>
-                    <div class="d-flex gap-3 text-muted small mb-2">
-                        <i class="fa fa-truck-fast"></i> Miễn phí vận chuyển đơn > 500k
+                    <div class="d-flex align-items-center gap-3 text-light small mb-2 policy-text">
+                        <i class="fa fa-truck-fast text-danger fs-5"></i> <span>Miễn phí vận chuyển đơn > 500k</span>
                     </div>
-                    <div class="d-flex gap-3 text-muted small">
-                        <i class="fa fa-rotate"></i> Đổi trả trong 7 ngày
+                    <div class="d-flex align-items-center gap-3 text-light small policy-text">
+                        <i class="fa fa-rotate text-primary fs-5"></i> <span>Đổi trả trong 7 ngày</span>
                     </div>
                 </div>
+
             </div>
         </div>
 
