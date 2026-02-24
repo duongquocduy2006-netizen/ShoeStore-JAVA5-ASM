@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh Sửa Loại Sản Phẩm | ShoeStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* GIỮ NGUYÊN CSS GỐC VÀ CẬP NHẬT LAYOUT */
+        :root {
+            --primary: #4f46e5; --primary-light: #e0e7ff; --secondary: #64748b;
+            --bg-body: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a;
+            --text-light: #64748b; --success: #10b981; --danger: #ef4444;
+            --radius: 16px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); font-size: 14px; }
+        
+        /* Cấu trúc Layout để chứa Sidebar */
+        .admin-wrapper { display: flex; min-height: 100vh; }
+        
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+        }
+        
+        .content-body { 
+            padding: 30px 50px; 
+            width: 100%; 
+            margin: 0; 
+        }
+
+        /* Card form mở rộng theo yêu cầu của bạn */
+        .card-form { 
+            background: var(--bg-card); 
+            padding: 40px; 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow);
+            width: 100%; 
+        }
+
+        .form-header { margin-bottom: 30px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-control { 
+            width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; 
+            border-radius: 10px; outline: none; transition: 0.2s;
+        }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 30px; }
+        .btn-custom {
+            padding: 12px 25px; border-radius: 10px; font-weight: 600; 
+            cursor: pointer; display: flex; align-items: center; gap: 8px; border: none;
+            transition: 0.3s; text-decoration: none;
+        }
+        .btn-submit { background: var(--primary); color: white; width: auto; } /* Chỉnh lại width auto cho nút */
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-back { background: #f1f5f9; color: var(--text-main); }
+        .btn-back:hover { background: #e2e8f0; }
+        
+        .alert-success { background: #dcfce7; color: #15803d; padding: 15px; border-radius: 10px; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="main-content">
+            <header th:replace="~{admin/fragments/header :: header}"></header>
+
+            <main class="content-body">
+                <div class="form-header">
+                    <h2 style="font-size: 24px; font-weight: 700;">Chỉnh Sửa Loại Sản Phẩm</h2>
+                    <p style="color: var(--secondary);">Cập nhật thông tin cho danh mục #<span th:text="${category.id}"></span></p>
+                </div>
+
+                <div th:if="${message}" class="alert-success">
+                    <i class="bi bi-check-circle-fill"></i> <span th:text="${message}"></span>
+                </div>
+
+                <div class="card-form">
+                    <form th:action="@{/admin/categories/edit/{id}(id=${category.id})}" th:object="${category}" method="post">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="form-group">
+                            <label>Tên loại sản phẩm</label>
+                            <input type="text" th:field="*{name}" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Slug</label>
+                            <input type="text" th:field="*{slug}" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Trạng thái</label>
+                            <select th:field="*{active}" class="form-control">
+                                <option th:value="true">Hiển thị</option>
+                                <option th:value="false">Ẩn</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn-custom btn-submit">Cập Nhật Thay Đổi</button>
+                            <a th:href="@{/admin/categories}" class="btn-custom btn-back">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
