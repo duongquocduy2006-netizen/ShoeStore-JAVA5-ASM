@@ -208,67 +208,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="#" class="order-id">#ORD-00921</a></td>
+                        <tr th:each="order : ${orders}" th:style="${order.status == 4 ? 'background-color: rgba(229, 9, 20, 0.05);' : ''}">
+                            <td>
+                                <a href="#" class="order-id" th:text="${order.orderCode}"
+                                   th:style="${order.status == 4 ? 'color: #666; text-decoration: line-through;' : ''}">#ORD-00000</a>
+                            </td>
                             <td>
                                 <div class="customer-info">
-                                    <span class="customer-name">Nguyễn Văn An</span>
-                                    <span class="customer-date"><i class="bi bi-clock"></i> 23/01/2026 - 08:30</span>
+                                    <span class="customer-name" th:text="${order.customerName}"
+                                          th:style="${order.status == 4 ? 'color: #888;' : ''}">Tên Khách Hàng</span>
+                                    <span class="customer-date" th:style="${order.status == 4 ? 'color: #555;' : ''}">
+                                        <i class="bi bi-clock"></i> <span th:text="${#dates.format(order.createdAt, 'dd/MM/yyyy - HH:mm')}">01/01/2026 - 00:00</span>
+                                    </span>
                                 </div>
                             </td>
-                            <td class="total-amount">1.250.000 ₫</td>
-                            <td><span class="status-badge status-pending">● Chờ xác nhận</span></td>
-                            <td><span class="badge-payment">COD</span></td>
+                            <td class="total-amount" th:text="${#numbers.formatDecimal(order.finalAmount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"
+                                th:style="${order.status == 4 ? 'color: #888;' : ''}">0 ₫</td>
+                            
+                            <td>
+                                <span th:if="${order.status == 1}" class="status-badge status-pending">● Chờ xác nhận</span>
+                                <span th:if="${order.status == 2}" class="status-badge status-shipping">● Đang giao hàng</span>
+                                <span th:if="${order.status == 3}" class="status-badge status-success">● Giao thành công</span>
+                                <span th:if="${order.status == 4}" class="status-badge status-cancel">● Đã hủy</span>
+                            </td>
+                            
+                            <td>
+                                <span class="badge-payment" 
+                                      th:classappend="${order.paymentMethod == 'Chuyển khoản' ? 'payment-vnpay' : ''}"
+                                      th:style="${order.status == 4 ? 'opacity: 0.5;' : ''}"
+                                      th:text="${order.paymentMethod == 'Chuyển khoản' ? 'Chuyển khoản' : 'COD'}">COD</span>
+                            </td>
                             <td style="text-align: right;">
                                 <button class="action-btn btn-view" title="Xem chi tiết"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
-
-                        <tr>
-                            <td><a href="#" class="order-id">#ORD-00920</a></td>
-                            <td>
-                                <div class="customer-info">
-                                    <span class="customer-name">Trần Thị Bích</span>
-                                    <span class="customer-date"><i class="bi bi-clock"></i> 22/01/2026 - 14:15</span>
-                                </div>
-                            </td>
-                            <td class="total-amount">850.000 ₫</td>
-                            <td><span class="status-badge status-shipping">● Đang giao hàng</span></td>
-                            <td><span class="badge-payment payment-vnpay">VNPAY QR</span></td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><a href="#" class="order-id">#ORD-00918</a></td>
-                            <td>
-                                <div class="customer-info">
-                                    <span class="customer-name">Lê Hoàng Nam</span>
-                                    <span class="customer-date"><i class="bi bi-clock"></i> 20/01/2026 - 10:00</span>
-                                </div>
-                            </td>
-                            <td class="total-amount">3.400.000 ₫</td>
-                            <td><span class="status-badge status-success">● Giao thành công</span></td>
-                            <td><span class="badge-payment">COD</span></td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr style="background-color: rgba(229, 9, 20, 0.05);">
-                            <td><a href="#" class="order-id" style="color: #666; text-decoration: line-through;">#ORD-00915</a></td>
-                            <td>
-                                <div class="customer-info">
-                                    <span class="customer-name" style="color: #888;">Phạm Văn Dũng</span>
-                                    <span class="customer-date" style="color: #555;"><i class="bi bi-clock"></i> 19/01/2026 - 09:45</span>
-                                </div>
-                            </td>
-                            <td class="total-amount" style="color: #888;">550.000 ₫</td>
-                            <td><span class="status-badge status-cancel">● Đã hủy</span></td>
-                            <td><span class="badge-payment" style="opacity: 0.5;">Chưa TT</span></td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
+                        
+                        <tr th:if="${#lists.isEmpty(orders)}">
+                            <td colspan="6" style="text-align: center; color: #666; padding: 30px;">
+                                Chưa có đơn hàng nào trong hệ thống.
                             </td>
                         </tr>
                     </tbody>

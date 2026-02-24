@@ -221,106 +221,60 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr th:each="cust : ${customers}" th:style="${cust.status == 0 ? 'background-color: rgba(229, 9, 20, 0.05);' : ''}">
                             <td>
                                 <div class="customer-profile">
-                                    <div class="avatar">AN</div>
+                                    <div class="avatar" 
+                                         th:style="${cust.status == 0 ? 'color: #666; border-color: #333; background: #000;' : ''}"
+                                         th:text="${cust.initials}">AV</div>
                                     <div class="customer-info">
-                                        <span class="customer-name">Nguyễn Văn An</span>
-                                        <span class="customer-email">an.nguyen@gmail.com</span>
+                                        <span class="customer-name" th:text="${cust.fullName}" 
+                                              th:style="${cust.status == 0 ? 'color: #666; text-decoration: line-through;' : ''}">Tên Khách</span>
+                                        <span class="customer-email" th:text="${cust.email}"
+                                              th:style="${cust.status == 0 ? 'color: #444;' : ''}">email@gmail.com</span>
                                     </div>
                                 </div>
                             </td>
-                            <td style="color: #ccc;">0988.123.456</td>
-                            <td><span class="tier-badge tier-gold"><i class="bi bi-star-fill"></i> Gold</span></td>
-                            <td class="total-spent">15.500.000 ₫</td>
+                            <td th:text="${cust.phone}" th:style="${cust.status == 0 ? 'color: #444;' : 'color: #ccc;'}">0900.000.000</td>
+                            
                             <td>
-                                <span class="status-badge status-active">
-                                    <span class="dot-active"></span> Hoạt động
+                                <span class="tier-badge" 
+                                      th:classappend="${cust.rankName == 'Vàng' ? 'tier-gold' : (cust.rankName == 'Bạc' ? 'tier-silver' : 'tier-bronze')}"
+                                      th:style="${cust.status == 0 ? 'color: #444; border-color: #333; background: transparent;' : ''}">
+                                    <i class="bi" th:classappend="${cust.rankName == 'Vàng' ? 'bi-star-fill' : (cust.rankName == 'Bạc' ? 'bi-star-half' : 'bi-award')}"></i>
+                                    <span th:text="${cust.rankName}">Đồng</span>
                                 </span>
                             </td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view" title="Xem chi tiết"><i class="bi bi-eye"></i></button>
-                                <button class="action-btn btn-lock" title="Khóa tài khoản"><i class="bi bi-lock"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
+                            
+                            <td class="total-spent" th:text="${#numbers.formatDecimal(cust.totalSpent, 0, 'COMMA', 0, 'POINT')} + ' ₫'"
+                                th:style="${cust.status == 0 ? 'color: #444;' : ''}">0 ₫</td>
+                            
                             <td>
-                                <div class="customer-profile">
-                                    <div class="avatar" style="color: #fff; border-color: #666;">TB</div>
-                                    <div class="customer-info">
-                                        <span class="customer-name">Trần Thị Bích</span>
-                                        <span class="customer-email">bich.tran@outlook.com</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="color: #ccc;">0912.333.444</td>
-                            <td><span class="tier-badge tier-silver"><i class="bi bi-star-half"></i> Silver</span></td>
-                            <td class="total-spent">5.200.000 ₫</td>
-                            <td>
-                                <span class="status-badge status-active">
+                                <span th:if="${cust.status == 1}" class="status-badge status-active">
                                     <span class="dot-active"></span> Hoạt động
                                 </span>
-                            </td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
-                                <button class="action-btn btn-lock"><i class="bi bi-lock"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="customer-profile">
-                                    <div class="avatar" style="color: #fb923c; border-color: #fb923c;">LH</div>
-                                    <div class="customer-info">
-                                        <span class="customer-name">Lê Hoàng</span>
-                                        <span class="customer-email">hoang.le@abc.com</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="color: #ccc;">0355.678.999</td>
-                            <td><span class="tier-badge tier-bronze"><i class="bi bi-award"></i> Bronze</span></td>
-                            <td class="total-spent">850.000 ₫</td>
-                            <td>
-                                <span class="status-badge status-active">
-                                    <span class="dot-active"></span> Hoạt động
-                                </span>
-                            </td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
-                                <button class="action-btn btn-lock"><i class="bi bi-lock"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr style="background-color: rgba(229, 9, 20, 0.05);">
-                            <td>
-                                <div class="customer-profile">
-                                    <div class="avatar" style="color: #666; border-color: #333; background: #000;">PV</div>
-                                    <div class="customer-info">
-                                        <span class="customer-name" style="color: #666; text-decoration: line-through;">Phạm Văn Dũng</span>
-                                        <span class="customer-email" style="color: #444;">dung.spam@fakemail.com</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="color: #444;">0999.000.000</td>
-                            <td><span class="tier-badge" style="color: #444; border-color: #333;">Bronze</span></td>
-                            <td class="total-spent" style="color: #444;">0 ₫</td>
-                            <td>
-                                <span class="status-badge status-blocked">
+                                <span th:if="${cust.status == 0}" class="status-badge status-blocked">
                                     <span class="dot-blocked"></span> Đã khóa
                                 </span>
                             </td>
+                            
                             <td style="text-align: right;">
-                                <button class="action-btn btn-view"><i class="bi bi-eye"></i></button>
-                                <button class="action-btn btn-unlock" title="Mở khóa"><i class="bi bi-unlock-fill"></i></button>
+                                <button class="action-btn btn-view" title="Xem chi tiết"><i class="bi bi-eye"></i></button>
+                                <button th:if="${cust.status == 1}" class="action-btn btn-lock" title="Khóa tài khoản"><i class="bi bi-lock"></i></button>
+                                <button th:if="${cust.status == 0}" class="action-btn btn-unlock" title="Mở khóa"><i class="bi bi-unlock-fill"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(customers)}">
+                            <td colspan="6" style="text-align: center; color: #666; padding: 30px;">
+                                Chưa có khách hàng nào trong hệ thống.
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div class="pagination">
-                    <span class="page-info">Hiển thị 1-10 trong tổng số 450 khách hàng</span>
+                    <span class="page-info">Hiển thị 1-10 trong tổng số <span th:text="${#lists.size(customers)}">0</span> khách hàng</span>
                     <div class="page-numbers">
                         <a href="#" class="page-link"><i class="bi bi-chevron-left"></i></a>
                         <a href="#" class="page-link active">1</a>
