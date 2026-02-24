@@ -1,30 +1,38 @@
 package com.ShoeStore.controller.admin;
 
+import com.ShoeStore.model.Product;
+import com.ShoeStore.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/admin") // Prefix chung cho toàn bộ controller này
+@RequestMapping("/admin")
 public class AdminProductManager {
 
-    // 1. Hiển thị trang danh sách (admin/products.html)
+    @Autowired
+    private ProductRepository productRepo;
+
+    // 1. Hiển thị trang danh sách sản phẩm từ DB
     @GetMapping("/products")
-    public String products() {
-        return "admin/products"; // Trả về file products.html
+    public String products(Model model) {
+        List<Product> list = productRepo.findAll();
+        model.addAttribute("products", list);
+        return "admin/products"; 
     }
 
-    // 2. Hiển thị Form thêm mới
     @GetMapping("/products/create")
     public String showCreateForm() {
-        return "admin/product-form"; // Trả về file product-form.html (dùng chung cho thêm/sửa)
+        return "admin/product-form"; 
     }
 
-    // 3. Hiển thị Form chỉnh sửa (Demo với ID)
     @GetMapping("/products/edit/{id}")
-    public String showEditForm(@PathVariable("id") Long id) {
-        // Sau này sẽ gọi Service lấy sản phẩm theo ID để fill vào form
+    public String showEditForm(@PathVariable("id") Integer id) {
         return "admin/product-form"; 
     }
 }
