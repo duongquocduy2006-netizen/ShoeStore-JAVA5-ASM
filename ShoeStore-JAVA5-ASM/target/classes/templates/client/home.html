@@ -174,14 +174,43 @@
             .featured-img-box { height: 300px; }
             .featured-content { padding: 40px 20px; }
         }
+        
+        .light-beam {
+            position: fixed;
+            bottom: -50px; /* Bắt đầu từ dưới màn hình một chút */
+            width: 6px;    /* Độ mảnh của tia sáng */
+            height: 50px;  /* Chiều dài ban đầu */
+            /* Tạo hiệu ứng vệt sáng gradient mờ 2 đầu */
+            background: linear-gradient(to top, transparent, white, transparent);
+            /* Hiệu ứng phát sáng rực rỡ xung quanh */
+            box-shadow: 0 0 20px 5px white; 
+            opacity: 1;
+            border-radius: 50%; /* Bo tròn đầu cho mềm mại */
+            pointer-events: none;
+            z-index: 99999;
+            /* Hiệu ứng chuyển động bay lên nhanh dần */
+            transition: all 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        /* Khi class này được thêm vào, tia sáng sẽ bay lên và kéo dài ra */
+        .light-beam.shoot {
+            bottom: 80% !important; /* Bay lên gần đỉnh màn hình */
+            height: 300px;          /* Kéo dài ra như một vệt sao băng */
+            opacity: 0;             /* Mờ dần khi lên cao */
+        }
+        
 
     </style>
 </head>
 <body>
+	<div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; pointer-events: none; background: transparent;"></div>
 
     <div th:replace="~{client/fragments/header :: header}"></div>
 
-    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+   <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000" style="position: relative;">
+        
+        <div id="fw-left" style="position: absolute; bottom: 0; left: 0; width: 300px; height: 100%; z-index: 10; pointer-events: none;"></div>
+        <div id="fw-right" style="position: absolute; bottom: 0; right: 0; width: 300px; height: 100%; z-index: 10; pointer-events: none;"></div>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/running_fw23_supernova_rise_global_educate_hp_banner_interactive_d_72404e330a.jpg" class="hero-bg">
@@ -359,6 +388,89 @@
     </div>
 
     <div th:replace="~{client/fragments/footer :: footer}"></div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    
+    <div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; pointer-events: none; background: transparent;"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.7/dist/index.umd.js"></script>
+    
+	<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // --- PHẦN 1: CẤU HÌNH PHÁO HOA NỀN (Hạt li ti 2 bên giữ nguyên cho đẹp) ---
+            const commonConfig = {
+                autoresize: true, opacity: 0.3, acceleration: 1.02, friction: 0.98, gravity: 1.2,
+                particles: 30, traceLength: 3, traceSpeed: 10, explosion: 4, intensity: 5, flickering: 50,
+                lineStyle: 'round', hue: { min: 0, max: 360 }, delay: { min: 20, max: 60 },
+                lineWidth: { explosion: { min: 1, max: 3 }, trace: { min: 0.1, max: 1 } },
+                brightness: { min: 50, max: 80 }, mouse: { click: false, move: false }
+            };
+
+            const fwLeft = new Fireworks.default(document.getElementById('fw-left'), {
+                ...commonConfig, rocketsPoint: { min: 0, max: 20 }
+            });
+            const fwRight = new Fireworks.default(document.getElementById('fw-right'), {
+                ...commonConfig, rocketsPoint: { min: 80, max: 100 }
+            });
+
+            fwLeft.start();
+            fwRight.start();
+
+            // --- PHẦN 2: THỦ THUẬT BẮN TIA SÁNG (Light Beams) ---
+            let beamInterval;
+
+            function shootLightBeam() {
+                // 1. Tạo thẻ tia sáng
+                const el = document.createElement('div');
+                el.classList.add('light-beam');
+
+                // 2. Random màu sắc cho tia sáng (để không chỉ có màu trắng)
+                const hue = Math.floor(Math.random() * 360);
+                const color = `hsl(${hue}, 100%, 70%)`; // Màu sáng rực
+                el.style.background = `linear-gradient(to top, transparent, ${color}, transparent)`;
+                el.style.boxShadow = `0 0 20px 5px ${color}`;
+
+                // 3. Chọn vị trí xuất phát ngẫu nhiên 2 bên
+                const isLeft = Math.random() < 0.5;
+                // Random vị trí trong khoảng 0-30% (trái) hoặc 70-100% (phải)
+                el.style.left = isLeft ? (Math.random() * 30 + '%') : (Math.random() * 30 + 70 + '%');
+                
+                // 4. Thêm vào body
+                document.body.appendChild(el);
+
+                // 5. Kích hoạt hiệu ứng bay lên sau 50ms
+                setTimeout(() => {
+                    el.classList.add('shoot');
+                }, 50);
+
+                // 6. Xóa khỏi web sau khi bay xong (1.2 giây)
+                setTimeout(() => {
+                    el.remove();
+                }, 1200);
+            }
+
+            // Cài đặt bắn tia sáng: Mỗi 0.4 giây bắn 1 tia (nhanh hơn bắn icon cũ)
+            beamInterval = setInterval(shootLightBeam, 400);
+
+
+            // --- PHẦN 3: DỪNG TẤT CẢ SAU 5 GIÂY ---
+            setTimeout(() => {
+                // Dừng pháo nền
+                fwLeft.waitStop(true);
+                fwRight.waitStop(true);
+                
+                // Dừng bắn tia sáng
+                clearInterval(beamInterval);
+                
+                // Dọn dẹp hiện trường
+                setTimeout(() => {
+                    document.getElementById('fw-left').remove();
+                    document.getElementById('fw-right').remove();
+                    // Xóa nốt các tia sáng còn sót lại
+                    document.querySelectorAll('.light-beam').forEach(e => e.remove());
+                }, 2000);
+            }, 5000); 
+        });
+    </script>
+</body>
 </html>
