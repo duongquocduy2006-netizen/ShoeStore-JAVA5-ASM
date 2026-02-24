@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm/Sửa Sản Phẩm | ShoeStore Professional</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* --- THEME CONFIGURATION (Đồng bộ Dashboard) --- */
+        :root {
+            --bg-body: #050505;
+            --bg-card: #121212;
+            --accent-red: #e50914;
+            --accent-cyan: #00f2ff;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --radius: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-size: 14px;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, .font-oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- LAYOUT --- */
+        .admin-wrapper { display: flex; min-height: 100vh; }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            flex-grow: 1; 
+            margin-left: 260px;
+            padding: 30px 40px;
+            background-image: radial-gradient(circle at 50% 10%, rgba(229, 9, 20, 0.05) 0%, transparent 40%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- PAGE HEADER --- */
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        .page-title { font-size: 32px; font-weight: 700; margin: 0; line-height: 1; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .sub-title { font-size: 13px; color: var(--accent-cyan); font-weight: 600; letter-spacing: 2px; display: block; margin-bottom: 5px; }
+
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 15px; }
+        
+        .btn-cancel {
+            background: transparent; border: 1px solid #333; color: #ccc; padding: 12px 25px;
+            font-family: 'Oswald'; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; text-decoration: none; display: inline-flex; align-items: center;
+        }
+        .btn-cancel:hover { border-color: #fff; color: #fff; }
+
+        .btn-save {
+            background: var(--accent-red); color: white; border: none; padding: 12px 30px;
+            font-family: 'Oswald'; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .btn-save:hover {
+            background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        /* --- FORM LAYOUT --- */
+        .form-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-glass);
+            border-radius: var(--radius); padding: 30px; margin-bottom: 30px;
+        }
+        .card-title {
+            font-family: 'Oswald'; font-size: 18px; color: var(--accent-cyan);
+            margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; letter-spacing: 1px;
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; margin-bottom: 10px; font-weight: 500; color: #ccc; font-size: 13px; letter-spacing: 0.5px; }
+        
+        .form-control {
+            width: 100%; padding: 12px 15px; background: #050505; border: 1px solid #333;
+            border-radius: 4px; color: #fff; font-family: 'Poppins'; outline: none; transition: 0.3s;
+        }
+        .form-control:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+        
+        textarea.form-control { resize: vertical; min-height: 150px; line-height: 1.6; }
+
+        /* --- IMAGE UPLOAD --- */
+        .image-upload-box {
+            border: 2px dashed #333; border-radius: var(--radius);
+            padding: 50px 20px; text-align: center; cursor: pointer; transition: 0.3s;
+            position: relative; overflow: hidden; background: #0a0a0a;
+        }
+        .image-upload-box:hover { border-color: var(--accent-cyan); background: rgba(0, 242, 255, 0.05); }
+        
+        .upload-icon { font-size: 40px; color: #555; margin-bottom: 15px; transition: 0.3s; }
+        .image-upload-box:hover .upload-icon { color: var(--accent-cyan); transform: translateY(-5px); }
+        
+        .upload-text { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        #preview-img {
+            max-width: 100%; max-height: 300px; display: none; margin-top: 15px; 
+            border-radius: 4px; border: 1px solid #333;
+        }
+        .file-input { display: none; }
+
+        /* --- TOGGLE SWITCH --- */
+        .status-wrapper { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: #888; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
+        input:checked + .slider:before { transform: translateX(24px); background-color: #000; }
+        
+        .status-label { font-family: 'Oswald'; letter-spacing: 1px; color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="main-content">
+            <header th:replace="~{admin/fragments/header :: header}"></header>
+
+            <main class="content-body">
+                
+                <form action="#" method="POST" enctype="multipart/form-data">
+                    
+                    <div class="page-header" style="margin-top: 20px;">
+                        <div>
+                            <span class="sub-title"><i class="bi bi-pencil-square"></i> QUẢN LÝ SẢN PHẨM</span>
+                            <h1 class="page-title font-oswald">THÊM / CẬP NHẬT SẢN PHẨM</h1>
+                        </div>
+                        <div class="btn-group">
+                            <a th:href="@{/admin/products}" class="btn-cancel">HỦY BỎ</a>
+                            <button type="submit" class="btn-save"><i class="bi bi-check2-circle"></i> LƯU SẢN PHẨM</button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        
+                        <div class="left-col">
+                            <div class="card">
+                                <h3 class="card-title">THÔNG TIN CHUNG</h3>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Tên sản phẩm</label>
+                                    <input type="text" class="form-control" placeholder="Nhập tên sản phẩm (VD: Nike Air Jordan 1)" required>
+                                </div>
+
+                                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                    <div>
+                                        <label class="form-label">Giá bán (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="0" min="0">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Giá khuyến mãi (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="0" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Mô tả sản phẩm</label>
+                                    <textarea class="form-control" placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng, công nghệ..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-title">KHO HÀNG & BIẾN THỂ</h3>
+                                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                    <div>
+                                        <label class="form-label">Mã sản phẩm (SKU)</label>
+                                        <input type="text" class="form-control" placeholder="VD: SP-001">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Số lượng tồn kho</label>
+                                        <input type="number" class="form-control" value="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="right-col">
+                            
+                            <div class="card">
+                                <h3 class="card-title">ẢNH ĐẠI DIỆN</h3>
+                                <div class="image-upload-box" onclick="document.getElementById('fileInput').click()">
+                                    <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewImage(event)">
+                                    <div id="upload-placeholder">
+                                        <i class="bi bi-cloud-arrow-up upload-icon"></i>
+                                        <p class="upload-text">KÉO THẢ HOẶC NHẤN ĐỂ TẢI ẢN</p>
+                                    </div>
+                                    <img id="preview-img" src="#" alt="Preview">
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-title">PHÂN LOẠI</h3>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Danh mục</label>
+                                    <select class="form-control">
+                                        <option value="">-- Chọn danh mục --</option>
+                                        <option value="1">Giày Sneaker</option>
+                                        <option value="2">Giày Tây</option>
+                                        <option value="3">Giày Chạy Bộ</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Thương hiệu</label>
+                                    <select class="form-control">
+                                        <option value="">-- Chọn thương hiệu --</option>
+                                        <option value="nike">Nike</option>
+                                        <option value="adidas">Adidas</option>
+                                        <option value="puma">Puma</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Trạng thái hiển thị</label>
+                                    <div class="status-wrapper">
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span class="status-label">Đang bán</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('preview-img');
+                var placeholder = document.getElementById('upload-placeholder');
+                
+                output.src = reader.result;
+                output.style.display = 'block';
+                placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+
+</body>
+</html>

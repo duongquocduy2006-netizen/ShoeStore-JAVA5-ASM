@@ -1,465 +1,395 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard | ShoeStore</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Admin Dashboard | ShoeStore Professional</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
+        /* --- THEME CONFIGURATION (Dark Mode) --- */
         :root {
-            --primary: #4f46e5; /* Xanh tím hiện đại */
-            --primary-light: #e0e7ff;
-            --secondary: #64748b;
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-light: #64748b;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --radius: 16px; /* Bo góc mềm mại */
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --bg-body: #050505;
+            --bg-card: #121212;
+            --accent-red: #e50914;
+            --accent-cyan: #00f2ff;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --radius: 6px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             font-size: 14px;
+            overflow-x: hidden;
         }
 
+        h1, h2, h3, h4, h5, .font-oswald { 
+            font-family: 'Oswald', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        /* --- LAYOUT --- */
         .admin-wrapper { display: flex; min-height: 100vh; }
         
-        /* Layout chính */
+        /* MAIN CONTENT - Đẩy sang phải để tránh Sidebar (width 260px) */
         .main-content {
             flex-grow: 1;
-            display: flex;
+            margin-left: 260px; /* Khớp với width của sidebar fragment */
+            display: flex; 
             flex-direction: column;
-            width: calc(100% - 280px); /* Trừ đi sidebar */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(229, 9, 20, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.03) 0%, transparent 25%);
         }
 
-        .content-body { padding: 30px; }
-
-        /* Header trang */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 30px;
-        }
-        
-        .dashboard-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 5px;
-            letter-spacing: -0.5px;
+        .content-body {
+            padding: 30px 40px;
         }
 
-        .text-muted { color: var(--text-light); font-size: 14px; }
-
-        .header-controls { display: flex; gap: 12px; }
+        /* HEADER DASHBOARD (Tiêu đề trang, nút action) */
+        .dashboard-actions {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 40px; border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 20px;
+        }
+        .welcome-sub { font-size: 13px; color: var(--accent-cyan); margin-bottom: 5px; font-weight: 600; letter-spacing: 2px; }
+        .page-title { font-size: 32px; font-weight: 700; margin: 0; line-height: 1; }
         
         .btn-action {
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            background: white;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex; align-items: center; gap: 8px;
+            background: transparent; color: #fff;
+            border: 1px solid var(--border-glass);
+            padding: 10px 20px; font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px; text-transform: uppercase; font-size: 13px;
+            cursor: pointer; transition: 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
         }
+        .btn-action:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
         
-        .btn-primary-custom {
-            background: var(--primary);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        .btn-primary-glow {
+            background: var(--accent-red); border-color: var(--accent-red);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
         }
-        .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4); }
+        .btn-primary-glow:hover {
+            background: #ff1e2b; transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+        }
 
-        /* --- 4 THẺ THỐNG KÊ (STATS) --- */
+        /* --- STATS CARDS --- */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 30px;
         }
-
         .stat-card {
             background: var(--bg-card);
-            padding: 24px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.2s;
-            border: 1px solid rgba(255,255,255,0.5);
+            padding: 24px; border: 1px solid var(--border-glass);
+            position: relative; overflow: hidden; border-radius: var(--radius);
+            transition: 0.3s;
         }
-        .stat-card:hover { transform: translateY(-5px); }
-
-        .stat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--accent-cyan); }
         
-        .stat-icon {
-            width: 48px; height: 48px;
-            border-radius: 12px;
+        .stat-icon-box {
+            width: 45px; height: 45px; background: rgba(255,255,255,0.05);
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
+            border-radius: 8px; color: var(--text-muted); font-size: 20px;
+            margin-bottom: 15px; transition: 0.3s;
         }
-        .bg-purple { background: #e0e7ff; color: #4338ca; }
-        .bg-blue { background: #dbeafe; color: #1e40af; }
-        .bg-orange { background: #ffedd5; color: #c2410c; }
-        .bg-green { background: #dcfce7; color: #15803d; }
+        .stat-card:hover .stat-icon-box { background: var(--accent-cyan); color: #000; box-shadow: 0 0 15px var(--accent-cyan); }
 
-        .stat-value { font-size: 28px; font-weight: 800; margin-bottom: 5px; color: var(--text-main); }
-        .stat-label { font-size: 13px; color: var(--text-light); font-weight: 500; }
+        .stat-value { font-size: 28px; font-weight: 700; margin-bottom: 5px; font-family: 'Oswald'; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         
-        .stat-trend {
-            font-size: 12px; font-weight: 600;
-            padding: 4px 8px; border-radius: 20px;
+        .trend-badge {
+            position: absolute; top: 24px; right: 24px;
+            font-size: 11px; padding: 4px 8px; font-weight: 600; border-radius: 4px;
             display: inline-flex; align-items: center; gap: 4px;
         }
-        .trend-up { background: #dcfce7; color: #166534; }
-        .trend-down { background: #fee2e2; color: #991b1b; }
+        .trend-up { background: rgba(0, 242, 255, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 255, 0.2); }
+        .trend-down { background: rgba(229, 9, 20, 0.1); color: var(--accent-red); border: 1px solid rgba(229, 9, 20, 0.2); }
 
-        /* --- LAYOUT GRID 2 CỘT --- */
-        .grid-2-1 {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
-        }
-
+        /* --- GRIDS & CHARTS --- */
+        .grid-2-1 { display: grid; grid-template-columns: 2.5fr 1fr; gap: 24px; margin-bottom: 30px; }
+        
         .card-box {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 24px;
+            background: var(--bg-card); border: 1px solid var(--border-glass);
+            padding: 25px; height: 100%; border-radius: var(--radius);
             display: flex; flex-direction: column;
         }
-
-        .card-title {
-            font-size: 18px; font-weight: 700;
-            margin-bottom: 20px;
-            display: flex; justify-content: space-between; align-items: center;
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
         }
+        .card-title { font-family: 'Oswald'; font-size: 18px; font-weight: 500; letter-spacing: 1px; }
 
-        /* --- BIỂU ĐỒ CSS (Làm đẹp lại) --- */
-        .chart-container { height: 300px; }
-        .bar-chart {
+        /* CSS Bar Chart */
+        .chart-visual {
             display: flex; align-items: flex-end; justify-content: space-between;
-            height: 220px; padding-top: 20px;
-            border-bottom: 1px solid #e2e8f0;
+            height: 220px; padding-top: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-grow: 1;
         }
-        
         .bar-group {
-            display: flex; flex-direction: column; align-items: center;
-            width: 100%; position: relative; cursor: pointer;
+            width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer;
         }
-        
         .bar {
-            width: 14px;
-            background: linear-gradient(180deg, var(--primary) 0%, #818cf8 100%);
-            border-radius: 10px 10px 0 0;
-            transition: height 1s ease, width 0.2s;
-            position: relative;
+            width: 14px; background: #333; border-radius: 4px 4px 0 0;
+            transition: height 1s ease, background 0.3s; position: relative;
         }
-        .bar:hover { width: 18px; filter: brightness(1.1); }
-        
-        .bar-label { font-size: 11px; color: var(--text-light); margin-top: 10px; }
-        
-        /* Tooltip giả cho biểu đồ */
-        .bar::after {
-            content: attr(data-value);
-            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-            background: #1e293b; color: white;
-            padding: 4px 8px; border-radius: 6px; font-size: 10px;
-            opacity: 0; transition: 0.2s; pointer-events: none; margin-bottom: 6px; white-space: nowrap;
+        .bar-active {
+            background: linear-gradient(180deg, var(--accent-red), #6d060b);
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
         }
-        .bar:hover::after { opacity: 1; bottom: 100%; }
+        .bar-max {
+             background: linear-gradient(180deg, var(--accent-cyan), #005f63);
+             box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+        .bar:hover { filter: brightness(1.3); width: 18px; }
+        .bar-label { font-size: 10px; color: #666; margin-top: 10px; font-weight: 600; }
 
-        /* --- DANH MỤC (PROGRESS) --- */
-        .cat-item { margin-bottom: 20px; }
-        .cat-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; font-weight: 600; }
-        .progress-bg { height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 10px; }
-
-        /* --- BẢNG SẢN PHẨM --- */
-        .table-custom { width: 100%; border-collapse: separate; border-spacing: 0; }
+        /* --- TABLES --- */
+        .table-custom { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .table-custom th {
-            text-align: left; color: var(--text-light); font-weight: 600; font-size: 12px;
-            text-transform: uppercase; padding: 12px 16px; border-bottom: 1px solid #e2e8f0;
+            text-align: left; color: #666; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1px; padding: 15px; border-bottom: 1px solid var(--border-glass);
         }
-        .table-custom td {
-            padding: 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle;
-        }
+        .table-custom td { padding: 15px; border-bottom: 1px solid var(--border-glass); vertical-align: middle; }
         .table-custom tr:last-child td { border-bottom: none; }
+        .table-custom tr:hover td { background: rgba(255,255,255,0.02); }
         
-        .product-info { display: flex; align-items: center; gap: 12px; }
-        .product-img {
-            width: 44px; height: 44px; border-radius: 10px; object-fit: cover;
-            border: 1px solid #f1f5f9;
-        }
-        .product-name { font-weight: 600; color: var(--text-main); display: block; }
-        .product-sub { font-size: 12px; color: var(--text-light); }
-
-        .badge {
-            padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 600;
-        }
-        .badge-gray { background: #f1f5f9; color: var(--text-light); }
+        .p-name { display: block; font-weight: 500; font-family: 'Oswald'; letter-spacing: 0.5px; color: #fff; text-decoration: none; }
+        .p-name:hover { color: var(--accent-cyan); }
+        .p-sub { font-size: 11px; color: var(--text-muted); }
+        .price-text { color: var(--accent-cyan); font-weight: 600; font-family: 'Oswald'; letter-spacing: 1px; }
 
         /* --- TIMELINE --- */
-        .timeline-item { display: flex; gap: 16px; margin-bottom: 24px; position: relative; }
+        .timeline-item { display: flex; gap: 15px; margin-bottom: 25px; position: relative; }
         .timeline-item::before {
-            content: ''; position: absolute; left: 6px; top: 24px; bottom: -24px;
-            width: 2px; background: #f1f5f9;
+            content: ''; position: absolute; left: 5px; top: 25px; bottom: -30px;
+            width: 1px; background: rgba(255,255,255,0.1);
         }
         .timeline-item:last-child::before { display: none; }
         
-        .timeline-dot {
-            width: 14px; height: 14px; border-radius: 50%; border: 2px solid white;
-            flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 0 2px var(--primary-light);
-            background: var(--primary);
+        .dot { 
+            width: 11px; height: 11px; background: #000; border: 2px solid #555; 
+            border-radius: 50%; flex-shrink: 0; margin-top: 5px; z-index: 2; 
         }
-        .dot-success { background: var(--success); box-shadow: 0 0 0 2px #dcfce7; }
-        .dot-warning { background: var(--warning); box-shadow: 0 0 0 2px #ffedd5; }
+        .dot.active { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); background: var(--accent-cyan); }
+        .dot.alert { border-color: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); background: var(--accent-red); }
         
-        .timeline-content p { font-size: 14px; margin-bottom: 4px; line-height: 1.4; }
-        .timeline-time { font-size: 12px; color: var(--text-light); }
+        .feed-text { font-size: 13px; color: #ccc; line-height: 1.4; margin-bottom: 4px; }
+        .feed-time { font-size: 11px; color: #666; font-family: 'Oswald'; }
 
     </style>
 </head>
 <body>
 
     <div class="admin-wrapper">
+        
         <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
 
         <div class="main-content">
+            
             <header th:replace="~{admin/fragments/header :: header}"></header>
 
             <main class="content-body">
                 
-                <div class="dashboard-header">
-                    <div class="header-left">
-                        <h2 class="dashboard-title">Tổng Quan Kinh Doanh</h2>
-                        <p class="text-muted">Chào mừng trở lại! Dưới đây là tình hình kinh doanh hôm nay.</p>
+                <div class="dashboard-actions">
+                    <div>
+                        <div class="welcome-sub"><i class="bi bi-stars"></i> SYSTEM ADMIN</div>
+                        <h2 class="page-title">TỔNG QUAN</h2>
                     </div>
-                    <div class="header-controls">
-                        <button class="btn-action">
-                            <i class="bi bi-calendar4"></i> Tháng này
-                        </button>
-                        <button class="btn-action btn-primary-custom">
-                            <i class="bi bi-download"></i> Xuất Báo Cáo
-                        </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-action"><i class="bi bi-calendar4"></i> &nbsp;Tháng này</button>
+                        <button class="btn-action btn-primary-glow"><i class="bi bi-download"></i> &nbsp;Xuất Báo Cáo</button>
                     </div>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon bg-purple"><i class="bi bi-currency-dollar"></i></div>
-                            <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +12.5%</span>
-                        </div>
-                        <h3 class="stat-value">1.25 Tỷ ₫</h3>
-                        <p class="stat-label">Tổng doanh thu</p>
+                        <div class="trend-badge trend-up"><i class="bi bi-graph-up"></i> +12.5%</div>
+                        <div class="stat-icon-box"><i class="bi bi-currency-dollar"></i></div>
+                        <div class="stat-value text-white">1.25 Tỷ ₫</div>
+                        <div class="stat-label">Doanh thu tổng</div>
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon bg-blue"><i class="bi bi-bag-check-fill"></i></div>
-                            <span class="stat-trend trend-down"><i class="bi bi-arrow-down-short"></i> -2.4%</span>
-                        </div>
-                        <h3 class="stat-value">2,450</h3>
-                        <p class="stat-label">Đơn hàng mới</p>
+                        <div class="trend-badge trend-down"><i class="bi bi-graph-down"></i> -2.4%</div>
+                        <div class="stat-icon-box"><i class="bi bi-bag-check"></i></div>
+                        <div class="stat-value" style="color: var(--accent-cyan);">2,450</div>
+                        <div class="stat-label">Đơn hàng mới</div>
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon bg-orange"><i class="bi bi-box-seam-fill"></i></div>
-                            <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +8.1%</span>
-                        </div>
-                        <h3 class="stat-value">35 SP</h3>
-                        <p class="stat-label">Cần nhập kho</p>
+                        <div class="trend-badge trend-up"><i class="bi bi-box"></i> +8.1%</div>
+                        <div class="stat-icon-box"><i class="bi bi-box-seam"></i></div>
+                        <div class="stat-value" style="color: var(--accent-red);">35</div>
+                        <div class="stat-label">Cần nhập kho</div>
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon bg-green"><i class="bi bi-people-fill"></i></div>
-                            <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +14%</span>
-                        </div>
-                        <h3 class="stat-value">+480</h3>
-                        <p class="stat-label">Khách hàng mới</p>
+                        <div class="trend-badge trend-up"><i class="bi bi-people"></i> +14%</div>
+                        <div class="stat-icon-box"><i class="bi bi-person-plus"></i></div>
+                        <div class="stat-value text-white">480</div>
+                        <div class="stat-label">Khách hàng mới</div>
                     </div>
                 </div>
 
                 <div class="grid-2-1">
-                    <div class="card-box chart-container">
-                        <div class="card-title">
-                            <span>Biểu đồ doanh thu năm 2024</span>
-                            <i class="bi bi-three-dots text-muted"></i>
+                    <div class="card-box">
+                        <div class="card-header">
+                            <span class="card-title">BIỂU ĐỒ DOANH THU 2026</span>
+                            <i class="bi bi-three-dots" style="color: #555; cursor: pointer;"></i>
                         </div>
                         
-                        <div class="bar-chart">
+                        <div class="chart-visual">
                             <div class="bar-group">
-                                <div class="bar" style="height: 40%;" data-value="400Tr"></div>
+                                <div class="bar bar-active" style="height: 40%;"></div>
                                 <span class="bar-label">T1</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 65%;" data-value="650Tr"></div>
+                                <div class="bar bar-active" style="height: 65%;"></div>
                                 <span class="bar-label">T2</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 50%;" data-value="500Tr"></div>
+                                <div class="bar bar-active" style="height: 50%;"></div>
                                 <span class="bar-label">T3</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 80%;" data-value="800Tr"></div>
+                                <div class="bar bar-active" style="height: 80%;"></div>
                                 <span class="bar-label">T4</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 45%;" data-value="450Tr"></div>
+                                <div class="bar bar-active" style="height: 45%;"></div>
                                 <span class="bar-label">T5</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 90%;" data-value="900Tr"></div>
-                                <span class="bar-label">T6</span>
+                                <div class="bar bar-max" style="height: 100%;"></div>
+                                <span class="bar-label text-white">T6</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 100%;" data-value="1.2 Tỷ"></div>
+                                <div class="bar" style="height: 70%;"></div>
                                 <span class="bar-label">T7</span>
                             </div>
                             <div class="bar-group">
-                                <div class="bar" style="height: 70%;" data-value="700Tr"></div>
+                                <div class="bar" style="height: 20%;"></div>
                                 <span class="bar-label">T8</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-box">
-                        <div class="card-title">Top Danh Mục</div>
+                        <div class="card-header">
+                            <span class="card-title">HOẠT ĐỘNG GẦN ĐÂY</span>
+                        </div>
                         
-                        <div class="cat-list">
-                            <div class="cat-item">
-                                <div class="cat-info">
-                                    <span><i class="bi bi-activity"></i> Giày Sneaker</span>
-                                    <span>85%</span>
+                        <div class="feed-list">
+                            <div class="timeline-item">
+                                <div class="dot active"></div>
+                                <div>
+                                    <p class="feed-text"><strong class="text-white">Nguyễn Văn A</strong> vừa đặt đơn hàng #DH9902</p>
+                                    <span class="feed-time">2 phút trước</span>
                                 </div>
-                                <div class="progress-bg"><div class="progress-fill" style="width: 85%; background: var(--primary);"></div></div>
-                            </div>
-                            
-                            <div class="cat-item">
-                                <div class="cat-info">
-                                    <span><i class="bi bi-briefcase"></i> Giày Tây</span>
-                                    <span>60%</span>
-                                </div>
-                                <div class="progress-bg"><div class="progress-fill" style="width: 60%; background: var(--success);"></div></div>
                             </div>
 
-                            <div class="cat-item">
-                                <div class="cat-info">
-                                    <span><i class="bi bi-dribbble"></i> Giày Thể Thao</span>
-                                    <span>45%</span>
+                            <div class="timeline-item">
+                                <div class="dot alert"></div>
+                                <div>
+                                    <p class="feed-text">Cảnh báo: <strong class="text-white">Nike Air Force 1</strong> sắp hết hàng.</p>
+                                    <span class="feed-time">15 phút trước</span>
                                 </div>
-                                <div class="progress-bg"><div class="progress-fill" style="width: 45%; background: var(--warning);"></div></div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="dot"></div>
+                                <div>
+                                    <p class="feed-text"><strong class="text-white">Trần Thị B</strong> đã đăng ký thành viên.</p>
+                                    <span class="feed-time">1 giờ trước</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="dot"></div>
+                                <div>
+                                    <p class="feed-text"><strong class="text-white">Admin</strong> đã cập nhật thông tin khuyến mãi.</p>
+                                    <span class="feed-time">3 giờ trước</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid-2-1">
-                    <div class="card-box">
-                        <div class="card-title">
-                            Top Sản Phẩm Bán Chạy
-                            <a href="#" style="font-size: 13px; color: var(--primary); text-decoration: none;">Xem tất cả</a>
-                        </div>
-                        <table class="table-custom">
-                            <thead>
-                                <tr>
-                                    <th>Sản phẩm</th>
-                                    <th>Danh mục</th>
-                                    <th>Doanh số</th>
-                                    <th style="text-align: right;">Tổng thu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="product-info">
-                                            <div class="product-img" style="background: #ddd;"></div>
-                                            <div>
-                                                <span class="product-name">Nike Air Jordan 1</span>
-                                                <span class="product-sub">#SP0025</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-gray">Sneaker</span></td>
-                                    <td style="font-weight: 600;">120</td>
-                                    <td style="text-align: right; color: var(--primary); font-weight: 700;">500Tr ₫</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="product-info">
-                                            <div class="product-img" style="background: #ddd;"></div>
-                                            <div>
-                                                <span class="product-name">Adidas UltraBoost</span>
-                                                <span class="product-sub">#SP0028</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-gray">Running</span></td>
-                                    <td style="font-weight: 600;">98</td>
-                                    <td style="text-align: right; color: var(--primary); font-weight: 700;">320Tr ₫</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="product-info">
-                                            <div class="product-img" style="background: #ddd;"></div>
-                                            <div>
-                                                <span class="product-name">Biti's Hunter X</span>
-                                                <span class="product-sub">#SP0102</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-gray">Thể thao</span></td>
-                                    <td style="font-weight: 600;">85</td>
-                                    <td style="text-align: right; color: var(--primary); font-weight: 700;">150Tr ₫</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="card-box">
+                    <div class="card-header">
+                        <span class="card-title">SẢN PHẨM BÁN CHẠY</span>
+                        <a href="#" style="font-size: 12px; color: var(--accent-cyan); text-decoration: none;">XEM TẤT CẢ <i class="bi bi-arrow-right"></i></a>
                     </div>
-
-                    <div class="card-box">
-                        <div class="card-title">Hoạt Động Gần Đây</div>
-                        
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-dot dot-success"></div>
-                                <div class="timeline-content">
-                                    <p><b>Nguyễn Văn A</b> đã đặt đơn hàng mới #DH-9088</p>
-                                    <span class="timeline-time">2 phút trước</span>
-                                </div>
-                            </div>
-
-                            <div class="timeline-item">
-                                <div class="timeline-dot dot-warning"></div>
-                                <div class="timeline-content">
-                                    <p>Kho hàng báo động: <b>Nike Air</b> sắp hết (còn 2)</p>
-                                    <span class="timeline-time">15 phút trước</span>
-                                </div>
-                            </div>
-
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <p><b>Trần Thị B</b> đã đăng ký tài khoản thành viên mới.</p>
-                                    <span class="timeline-time">1 giờ trước</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Trạng thái</th>
+                                <th>Đã bán</th>
+                                <th style="text-align: right;">Tổng thu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px;">
+                                            <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/99486859-0ff3-46b4-949b-2d16af2ad421/custom-nike-dunk-low-by-you-su23.png" style="width:100%; height:100%; object-fit: cover; border-radius: 4px;">
+                                        </div>
+                                        <div>
+                                            <a href="#" class="p-name">Nike Dunk Low Retro</a>
+                                            <span class="p-sub">SKU: #NK-001</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span style="color: #4ade80; font-size: 11px;">● Còn hàng</span></td>
+                                <td style="font-weight: 600; color: #fff;">120</td>
+                                <td style="text-align: right;" class="price-text">500.000.000₫</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px;">
+                                            <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/547228a4-0995-468b-980b-2268b813d11b/air-jordan-1-low-mens-shoes-kT68k6.png" style="width:100%; height:100%; object-fit: cover; border-radius: 4px;">
+                                        </div>
+                                        <div>
+                                            <a href="#" class="p-name">Air Jordan 1 Low</a>
+                                            <span class="p-sub">SKU: #JD-025</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span style="color: var(--accent-red); font-size: 11px;">● Sắp hết</span></td>
+                                <td style="font-weight: 600; color: #fff;">98</td>
+                                <td style="text-align: right;" class="price-text">320.000.000₫</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px;">
+                                            <img src="https://nb.scene7.com/is/image/NB/mr530sg_nb_02_i?$pdpflexf2$&wid=440&hei=440" style="width:100%; height:100%; object-fit: cover; border-radius: 4px;">
+                                        </div>
+                                        <div>
+                                            <a href="#" class="p-name">New Balance 530</a>
+                                            <span class="p-sub">SKU: #NB-530</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span style="color: #4ade80; font-size: 11px;">● Còn hàng</span></td>
+                                <td style="font-weight: 600; color: #fff;">85</td>
+                                <td style="text-align: right;" class="price-text">150.000.000₫</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
             </main>
@@ -468,9 +398,15 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            // document.getElementById('current-time-now').textContent = now.toLocaleDateString('vi-VN', options);
+            // Animation for bars on load
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                const targetHeight = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = targetHeight;
+                }, index * 100);
+            });
         });
     </script>
 </body>

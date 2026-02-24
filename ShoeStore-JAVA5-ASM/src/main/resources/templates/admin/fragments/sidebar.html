@@ -6,145 +6,133 @@
 <body>
 
     <aside th:fragment="sidebar" id="sidebar-wrapper">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
         <style>
-            /* Tổng thể Sidebar */
-            #sidebar-wrapper {
-                width: 280px;
-                min-height: 100vh;
-                background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
-                color: #e5e7eb;
-                display: flex;
-                flex-direction: column;
-                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
-                font-family: 'Segoe UI', sans-serif;
-                flex-shrink: 0;
-                z-index: 1000;
+            /* --- THEME VARIABLES --- */
+            :root {
+                --sidebar-bg: #0a0a0a;
+                --sidebar-border: rgba(255, 255, 255, 0.08);
+                --accent-red: #e50914;
+                --accent-cyan: #00f2ff;
+                --text-main: #ffffff;
+                --text-muted: #a1a1aa;
             }
 
-            /* Phần Logo */
+            /* --- LAYOUT SIDEBAR --- */
+            #sidebar-wrapper {
+                width: 260px;
+                min-height: 100vh;
+                background: var(--sidebar-bg);
+                border-right: 1px solid var(--sidebar-border);
+                display: flex;
+                flex-direction: column;
+                font-family: 'Poppins', sans-serif;
+                flex-shrink: 0;
+                position: fixed; /* Cố định sidebar */
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            /* --- BRANDING --- */
             .sidebar-branding {
                 height: 80px;
                 display: flex;
                 align-items: center;
-                padding: 0 24px;
-                background: rgba(255,255,255,0.03);
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                justify-content: center;
+                border-bottom: 1px solid var(--sidebar-border);
+                margin-bottom: 20px;
+            }
+
+            .brand-logo {
+                font-family: 'Oswald', sans-serif;
+                font-size: 26px;
+                font-weight: 700;
+                color: var(--text-main);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+                text-decoration: none;
+                display: flex; align-items: center; gap: 8px;
             }
             
-            .brand-logo i {
-                font-size: 28px;
-                color: #3b82f6;
-                filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
-                margin-right: 12px;
-            }
+            .brand-logo span { color: var(--accent-red); }
 
-            .brand-name {
-                display: flex;
-                flex-direction: column;
-            }
-            .brand-name span {
-                font-size: 18px;
-                font-weight: 800;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                background: -webkit-linear-gradient(#fff, #94a3b8);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            .brand-name small {
-                font-size: 11px;
-                color: #64748b;
-                font-weight: 600;
-            }
-
-            /* Phần Menu */
+            /* --- NAV MENU --- */
             .sidebar-nav {
-                padding: 20px 16px;
+                padding: 0 15px;
                 flex-grow: 1;
                 overflow-y: auto;
             }
 
+            /* Scrollbar ẩn cho đẹp */
+            .sidebar-nav::-webkit-scrollbar { width: 4px; }
+            .sidebar-nav::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
             .nav-label {
                 font-size: 11px;
-                font-weight: 700;
-                color: #475569;
+                font-weight: 600;
+                color: #555;
                 text-transform: uppercase;
-                margin: 24px 0 12px 12px;
-                letter-spacing: 0.8px;
+                margin: 25px 0 10px 10px;
+                letter-spacing: 1.5px;
+                font-family: 'Oswald', sans-serif;
             }
 
-            .nav-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+            .nav-list { list-style: none; padding: 0; margin: 0; }
+            .nav-item { margin-bottom: 4px; }
 
-            .nav-item {
-                margin-bottom: 6px;
-            }
-
-            /* Link Menu */
+            /* --- LINKS --- */
             .nav-link {
                 display: flex;
                 align-items: center;
                 padding: 12px 16px;
-                color: #9ca3af;
+                color: var(--text-muted);
                 text-decoration: none;
-                border-radius: 12px;
+                border-radius: 4px;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: 500;
                 border-left: 3px solid transparent;
+                position: relative;
+                overflow: hidden;
             }
 
             .nav-link i {
-                font-size: 20px;
-                width: 24px;
-                margin-right: 12px;
+                font-size: 18px;
+                width: 25px;
+                margin-right: 10px;
                 text-align: center;
-                transition: transform 0.3s;
+                transition: 0.3s;
             }
 
-            /* Hiệu ứng Hover */
+            /* Hover Effect */
             .nav-link:hover {
-                background: rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.05);
                 color: #fff;
                 padding-left: 20px;
             }
+            .nav-link:hover i { transform: scale(1.1); color: var(--accent-cyan); }
 
-            .nav-link:hover i {
-                transform: scale(1.2);
-                color: #60a5fa;
-            }
-
-            /* Trạng thái Active (Được kích hoạt bởi JS) */
+            /* ACTIVE STATE - Cyberpunk Red Glow */
             .nav-link.active {
-                background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
-                color: #60a5fa;
-                border-left-color: #3b82f6;
+                background: linear-gradient(90deg, rgba(229, 9, 20, 0.15), transparent);
+                color: var(--accent-red);
+                border-left-color: var(--accent-red);
+                box-shadow: inset 10px 0 20px -10px rgba(229, 9, 20, 0.5);
             }
+            
+            .nav-link.active i { color: var(--accent-red); text-shadow: 0 0 10px rgba(229, 9, 20, 0.6); }
 
-            .nav-link.active i {
-                color: #3b82f6;
-            }
-
-            /* Badge số lượng */
-            .badge-new {
-                margin-left: auto;
-                background: #ef4444;
-                color: white;
-                font-size: 10px;
-                font-weight: 700;
-                padding: 2px 8px;
-                border-radius: 20px;
-                box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
-            }
-
-            /* Nút Logout */
+            /* --- LOGOUT AREA --- */
             .logout-wrapper {
-                padding: 16px;
-                border-top: 1px solid rgba(255,255,255,0.05);
+                padding: 20px;
+                border-top: 1px solid var(--sidebar-border);
+                margin-top: auto;
             }
             .btn-logout {
                 display: flex;
@@ -152,29 +140,28 @@
                 justify-content: center;
                 width: 100%;
                 padding: 12px;
-                background: rgba(239, 68, 68, 0.1);
-                color: #fca5a5;
+                background: transparent;
+                border: 1px solid #333;
+                color: #888;
                 text-decoration: none;
-                border-radius: 10px;
-                font-weight: 600;
+                font-family: 'Oswald', sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 12px;
                 transition: all 0.3s;
             }
             .btn-logout:hover {
-                background: #ef4444;
+                background: var(--accent-red);
+                border-color: var(--accent-red);
                 color: white;
-                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+                box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
             }
-            .btn-logout i { margin-right: 8px; }
         </style>
 
         <div class="sidebar-branding">
-            <div class="brand-logo">
-                <i class="bi bi-box-seam-fill"></i>
-            </div>
-            <div class="brand-name">
-                <span>ShoeStore</span>
-                <small>Admin Dashboard</small>
-            </div>
+            <a th:href="@{/admin/dashboard}" class="brand-logo">
+                SHOE<span>STORE</span>
+            </a>
         </div>
 
         <nav class="sidebar-nav">
@@ -182,55 +169,58 @@
             <ul class="nav-list">
                 <li class="nav-item">
                     <a th:href="@{/admin/dashboard}" class="nav-link">
-                        <i class="bi bi-speedometer2"></i>
-                        <span>Tổng quan</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/admin/products}" class="nav-link">
-                        <i class="bi bi-bag-fill"></i>
-                        <span>Sản phẩm</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/admin/categories}" class="nav-link">
-                       <i class="bi bi-collection-fill"></i>
-                        <span>Danh Mục</span>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Tổng Quan</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin/orders}" class="nav-link">
                         <i class="bi bi-cart-check"></i>
-                        <span>Đơn hàng</span>
+                        <span>Đơn Hàng</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/sale}" class="nav-link">
+                        <i class="bi bi-shop"></i>
+                        <span>Tại Quầy (POS)</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin/customers}" class="nav-link">
                         <i class="bi bi-people-fill"></i>
-                        <span>Khách hàng</span>
+                        <span>Khách Hàng</span>
                     </a>
                 </li>
-                   <li class="nav-item">
-                    <a th:href="@{/admin/sale}" class="nav-link">
-                        <i class="bi bi-ticket-perforated-fill"></i>
-                        <span>Khuyến Mãi</span>
+            </ul>
+
+            <div class="nav-label">Kho & Sản phẩm</div>
+            <ul class="nav-list">
+                 <li class="nav-item">
+                    <a th:href="@{/admin/products}" class="nav-link">
+                        <i class="bi bi-box-seam-fill"></i>
+                        <span>Sản Phẩm</span>
                     </a>
                 </li>
-    			<li class="nav-item">
-                    <a th:href="@{/admin/promotions}" class="nav-link">
-                        <i class="bi bi-stars"></i>
-                        <span>Ưu Đãi</span>
+                <li class="nav-item">
+                    <a th:href="@{/admin/categories}" class="nav-link">
+                       <i class="bi bi-tags-fill"></i>
+                        <span>Danh Mục</span>
                     </a>
                 </li>
             </ul>
             
-
             <div class="nav-label">Hệ thống</div>
             <ul class="nav-list">
                 <li class="nav-item">
+                    <a th:href="@{/admin/promotions}" class="nav-link">
+                        <i class="bi bi-ticket-perforated-fill"></i>
+                        <span>Khuyến Mãi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a th:href="@{/admin/settings}" class="nav-link">
                         <i class="bi bi-gear-fill"></i>
-                        <span>Cài đặt</span>
+                        <span>Cài Đặt</span>
                     </a>
                 </li>
             </ul>
@@ -238,23 +228,19 @@
 
         <div class="logout-wrapper">
             <a th:href="@{/logout}" class="btn-logout">
-                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                <i class="bi bi-box-arrow-right" style="margin-right: 8px;"></i> Đăng xuất
             </a>
         </div>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Lấy đường dẫn hiện tại (ví dụ: /admin/products)
                 const currentPath = window.location.pathname;
-                
-                // Tìm tất cả các link trong menu
                 const menuLinks = document.querySelectorAll('.nav-link');
                 
                 menuLinks.forEach(link => {
                     const href = link.getAttribute('href');
-                    
-                    // Nếu link trùng với trang hiện tại thì thêm class active
-                    if (currentPath === href || (href !== '/admin/dashboard' && currentPath.startsWith(href))) {
+                    // Logic: Active nếu trùng khớp chính xác hoặc là trang con (trừ Dashboard ra để tránh active nhầm)
+                    if (href === currentPath || (href !== '/admin/dashboard' && currentPath.startsWith(href))) {
                         link.classList.add('active');
                     }
                 });
