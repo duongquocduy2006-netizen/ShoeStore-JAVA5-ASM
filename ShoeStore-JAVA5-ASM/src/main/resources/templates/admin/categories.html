@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
-<<<<<<< HEAD
         /* --- THEME CONFIGURATION (Đồng bộ Dashboard) --- */
         :root {
             --bg-body: #050505;
@@ -21,17 +20,9 @@
             --text-muted: #a1a1aa;
             --border-glass: rgba(255, 255, 255, 0.08);
             --radius: 6px;
-=======
-        /* GIỮ NGUYÊN TOÀN BỘ CSS CỦA BẠN */
-        :root {
-            --primary: #4f46e5; --primary-light: #e0e7ff; --secondary: #64748b;
-            --bg-body: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a;
-            --text-light: #64748b; --success: #10b981; --danger: #ef4444;
-            --radius: 16px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
->>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-<<<<<<< HEAD
         
         body {
             font-family: 'Poppins', sans-serif;
@@ -102,85 +93,17 @@
         tr:hover td { background: rgba(255,255,255,0.02); }
 
         /* ID Column Style */
-        .cat-id { font-family: 'Oswald'; color: var(--accent-cyan); letter-spacing: 1px; }
+        .cat-id { font-family: 'Oswald'; color: var(--accent-cyan); letter-spacing: 1px; font-weight: 600; }
         
         /* Action Buttons */
         .action-btn {
             width: 35px; height: 35px; background: transparent; border: 1px solid #333;
             color: #888; display: inline-flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; margin-left: 5px; border-radius: 4px;
+            cursor: pointer; transition: 0.3s; margin-left: 5px; border-radius: 4px; text-decoration: none;
         }
         .btn-edit:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
         .btn-delete:hover { border-color: var(--accent-red); color: var(--accent-red); box-shadow: 0 0 10px rgba(229, 9, 20, 0.3); }
 
-        /* --- MODAL (Cyberpunk Style) --- */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center;
-        }
-        .modal-box {
-            background: #121212; width: 500px; padding: 40px; border: 1px solid var(--border-glass);
-            position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            animation: slideDown 0.3s ease-out;
-        }
-        .modal-box::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), transparent);
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-title { font-family: 'Oswald'; font-size: 24px; margin-bottom: 25px; color: #fff; }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
-        .form-input {
-            width: 100%; background: #050505; border: 1px solid #333; padding: 12px;
-            color: #fff; outline: none; transition: 0.3s;
-        }
-        .form-input:focus { border-color: var(--accent-cyan); }
-        
-        .modal-actions { display: flex; gap: 15px; margin-top: 30px; }
-        .btn-cancel {
-            background: transparent; border: 1px solid #333; color: #fff; padding: 12px 25px;
-            font-family: 'Oswald'; letter-spacing: 1px; cursor: pointer; transition: 0.3s; flex: 1;
-            text-transform: uppercase;
-        }
-        .btn-cancel:hover { background: #333; }
-
-=======
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); font-size: 14px; }
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - 280px); }
-        .content-body { padding: 30px; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn-primary-custom {
-            background: var(--primary); color: white; border: none; padding: 10px 20px;
-            border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            transition: all 0.2s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-            text-decoration: none; /* Thêm để nút <a> trông giống button */
-        }
-        .btn-primary-custom:hover { transform: translateY(-2px); filter: brightness(1.1); color: white; }
-        .filter-section {
-            background: var(--bg-card); padding: 20px; border-radius: var(--radius);
-            box-shadow: var(--shadow); margin-bottom: 24px; display: flex; gap: 15px; align-items: center;
-        }
-        .search-input { flex-grow: 1; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none; }
-        .card-table { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-        .table-custom { width: 100%; border-collapse: collapse; }
-        .table-custom th { background: #f8fafc; text-align: left; padding: 16px; color: var(--text-light); font-weight: 600; text-transform: uppercase; font-size: 12px; }
-        .table-custom td { padding: 16px; border-bottom: 1px solid #f1f5f9; }
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .badge-active { background: #dcfce7; color: #15803d; }
-        .badge-hidden { background: #fee2e2; color: #991b1b; }
-        .action-btns { display: flex; gap: 8px; }
-        .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: white; color: var(--text-main); text-decoration: none; }
-        .btn-edit:hover { background: var(--primary-light); color: var(--primary); }
-        .btn-delete:hover { background: #fee2e2; color: var(--danger); }
->>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
     </style>
 </head>
 <body>
@@ -193,32 +116,20 @@
             
             <header th:replace="~{admin/fragments/header :: header}"></header>
 
-<<<<<<< HEAD
             <div class="page-header" style="margin-top: 20px;">
                 <div>
                     <span class="sub-title"><i class="bi bi-tags"></i> QUẢN LÝ DANH MỤC</span>
                     <h1 class="page-title font-oswald">LOẠI SẢN PHẨM</h1>
                 </div>
-                <button onclick="openModal()" class="btn-neon">
+                <a th:href="@{/admin/categories/add}" class="btn-neon">
                     <i class="bi bi-plus-lg"></i> Thêm Danh Mục
-                </button>
+                </a>
             </div>
 
             <div class="toolbar">
                 <div class="search-box">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Tìm kiếm danh mục...">
-=======
-            <main class="content-body">
-                <div class="page-header">
-                    <div>
-                        <h2 style="font-size: 24px; font-weight: 700;">Quản Lý Loại Sản Phẩm</h2>
-                        <p class="text-muted">Phân loại sản phẩm giúp khách hàng tìm kiếm dễ dàng hơn.</p>
-                    </div>
-                    <a th:href="@{/admin/categories/add}" class="btn-primary-custom">
-                        <i class="bi bi-plus-lg"></i> Thêm Loại Mới
-                    </a>
->>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
                 </div>
                 
                 <select class="search-input" style="width: 200px; flex-grow: 0;">
@@ -234,144 +145,45 @@
                         <tr>
                             <th style="width: 100px;">ID</th>
                             <th>Tên danh mục</th>
-                            <th>Mô tả</th>
-                            <th>Số lượng SP</th>
+                            <th>Đường dẫn (Slug)</th>
                             <th>Trạng thái</th>
                             <th style="text-align: right;">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="cat-id">#CAT-01</td>
-                            <td style="font-weight: 600; color: #fff;">Giày Sneaker</td>
-                            <td style="color: #888;">Các dòng giày thời trang trẻ trung...</td>
-                            <td style="color: var(--accent-cyan); font-weight: 700;">124</td>
-                            <td><span style="color: #4ade80; font-size: 11px; text-transform: uppercase; font-weight: 700;">● Hiển thị</span></td>
+                        <tr th:each="cate : ${list}">
+                            <td class="cat-id" th:text="${'#CAT-' + cate.id}">#CAT-01</td>
+                            <td style="font-weight: 600; color: #fff;" th:text="${cate.name}">Tên Loại</td>
+                            <td style="color: #888;" th:text="${cate.slug}">slug-duong-dan</td>
+                            
+                            <td>
+                                <span th:if="${cate.active}" style="color: #4ade80; font-size: 11px; text-transform: uppercase; font-weight: 700;">● Hiển thị</span>
+                                <span th:unless="${cate.active}" style="color: var(--accent-red); font-size: 11px; text-transform: uppercase; font-weight: 700;">● Đang ẩn</span>
+                            </td>
+                            
                             <td style="text-align: right;">
-                                <button class="action-btn btn-edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="action-btn btn-delete"><i class="bi bi-trash"></i></button>
+                                <a th:href="@{/admin/categories/edit/{id}(id=${cate.id})}" class="action-btn btn-edit" title="Sửa">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a th:href="@{/admin/categories/delete/{id}(id=${cate.id})}" 
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')" 
+                                   class="action-btn btn-delete" title="Xóa">
+                                    <i class="bi bi-trash"></i>
+                                </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="cat-id">#CAT-02</td>
-                            <td style="font-weight: 600; color: #fff;">Giày Chạy Bộ</td>
-                            <td style="color: #888;">Giày chuyên dụng cho vận động viên...</td>
-                            <td style="color: var(--accent-cyan); font-weight: 700;">85</td>
-                            <td><span style="color: #4ade80; font-size: 11px; text-transform: uppercase; font-weight: 700;">● Hiển thị</span></td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="action-btn btn-delete"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="cat-id">#CAT-03</td>
-                            <td style="font-weight: 600; color: #fff;">Phụ Kiện</td>
-                            <td style="color: #888;">Dây giày, bình xịt, vớ...</td>
-                            <td style="color: #666; font-weight: 700;">12</td>
-                            <td><span style="color: var(--accent-red); font-size: 11px; text-transform: uppercase; font-weight: 700;">● Đang ẩn</span></td>
-                            <td style="text-align: right;">
-                                <button class="action-btn btn-edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="action-btn btn-delete"><i class="bi bi-trash"></i></button>
+                        
+                        <tr th:if="${#lists.isEmpty(list)}">
+                            <td colspan="5" style="text-align: center; padding: 30px; color: #888;">
+                                Chưa có dữ liệu danh mục nào.
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-<<<<<<< HEAD
         </div>
     </div>
 
-    <div class="modal-overlay" id="categoryModal">
-        <div class="modal-box">
-            <h3 class="modal-title">THÊM DANH MỤC MỚI</h3>
-            <form>
-                <div class="form-group">
-                    <label class="form-label">Tên danh mục</label>
-                    <input type="text" class="form-input" placeholder="Nhập tên danh mục...">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Mô tả ngắn</label>
-                    <textarea class="form-input" rows="3" placeholder="Mô tả về loại sản phẩm này..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Trạng thái hiển thị</label>
-                    <select class="form-input">
-                        <option value="1">Hiển thị ngay</option>
-                        <option value="0">Tạm ẩn</option>
-                    </select>
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">HỦY BỎ</button>
-                    <button type="button" class="btn-neon" style="flex: 1; justify-content: center; border: none;">LƯU LẠI</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function openModal() {
-            document.getElementById('categoryModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('categoryModal').style.display = 'none';
-        }
-
-        // Đóng modal khi click ra ngoài
-        window.onclick = function(event) {
-            const modal = document.getElementById('categoryModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-=======
-                <div class="card-table">
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th style="width: 80px;">ID</th>
-                                <th>Tên Loại Sản Phẩm</th>
-                                <th>Đường dẫn (Slug)</th>
-                                <th>Trạng Thái</th>
-                                <th style="text-align: right;">Thao Tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="cate : ${list}">
-                                <td style="font-weight: 600;" th:text="${'#' + cate.id}">#ID</td>
-                                <td><span style="font-weight: 600;" th:text="${cate.name}">Tên Loại</span></td>
-                                <td class="text-muted" th:text="${cate.slug}">slug-duong-dan</td>
-                                <td>
-                                    <span th:if="${cate.active}" class="badge badge-active">Hiển thị</span>
-                                    <span th:unless="${cate.active}" class="badge badge-hidden">Đang ẩn</span>
-                                </td>
-                                <td>
-                                    <div class="action-btns" style="justify-content: flex-end;">
-                                        <a th:href="@{/admin/categories/edit/{id}(id=${cate.id})}" class="btn-icon btn-edit" title="Sửa">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a th:href="@{/admin/categories/delete/{id}(id=${cate.id})}" 
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa loại này?')"
-                                           class="btn-icon btn-delete" title="Xóa">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(list)}">
-                                <td colspan="5" style="text-align: center; padding: 30px; color: var(--text-light);">
-                                    Chưa có dữ liệu loại sản phẩm nào.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-        </div>
-    </div>
->>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
 </body>
 </html>
