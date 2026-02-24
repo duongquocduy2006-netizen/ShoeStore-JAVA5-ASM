@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Activity {
-    private String text;
-    private String time;
-    private String type;
+    private String type;     // "success", "warning", "info"
+    private String message;  // Nội dung thông báo
+    private String timeAgo;  // Thời gian (VD: "2 phút trước")
 }
