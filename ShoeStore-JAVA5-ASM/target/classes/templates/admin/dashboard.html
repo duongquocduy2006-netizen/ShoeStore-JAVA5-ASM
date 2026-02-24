@@ -198,6 +198,7 @@
             
             <header th:replace="~{admin/fragments/header :: header}"></header>
 
+<<<<<<< HEAD
             <main class="content-body">
                 
                 <div class="dashboard-actions">
@@ -208,9 +209,93 @@
                     <div style="display: flex; gap: 10px;">
                         <button class="btn-action"><i class="bi bi-calendar4"></i> &nbsp;Tháng này</button>
                         <button class="btn-action btn-primary-glow"><i class="bi bi-download"></i> &nbsp;Xuất Báo Cáo</button>
+=======
+        <main class="content-body">
+    <div class="dashboard-header">
+        <div class="header-left">
+            <h2 class="dashboard-title">Tổng Quan Kinh Doanh</h2>
+            <p class="text-muted">Chào mừng trở lại! Dưới đây là tình hình kinh doanh hôm nay.</p>
+        </div>
+        <div class="header-controls">
+            <button class="btn-action">
+                <i class="bi bi-calendar4"></i> <span th:text="${currentTimeRange}">Tháng này</span>
+            </button>
+            <button class="btn-action btn-primary-custom">
+                <i class="bi bi-download"></i> Xuất Báo Cáo
+            </button>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon bg-purple"><i class="bi bi-currency-dollar"></i></div>
+                <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +12.5%</span>
+            </div>
+            <h3 class="stat-value" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT') + ' ₫'}">0 ₫</h3>
+            <p class="stat-label">Tổng doanh thu</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon bg-blue"><i class="bi bi-bag-check-fill"></i></div>
+                <span class="stat-trend trend-down"><i class="bi bi-arrow-down-short"></i> -2.4%</span>
+            </div>
+            <h3 class="stat-value" th:text="${newOrdersCount}">0</h3>
+            <p class="stat-label">Đơn hàng mới</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon bg-orange"><i class="bi bi-box-seam-fill"></i></div>
+                <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +8.1%</span>
+            </div>
+            <h3 class="stat-value" th:text="${lowStockCount + ' SP'}">0 SP</h3>
+            <p class="stat-label">Cần nhập kho</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon bg-green"><i class="bi bi-people-fill"></i></div>
+                <span class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i> +14%</span>
+            </div>
+            <h3 class="stat-value" th:text="${'+' + newCustomersCount}">0</h3>
+            <p class="stat-label">Khách hàng mới</p>
+        </div>
+    </div>
+
+    <div class="grid-2-1">
+        <div class="card-box chart-container">
+            <div class="card-title">
+                <span th:text="'Biểu đồ doanh thu năm ' + ${currentYear}">Biểu đồ doanh thu</span>
+                <i class="bi bi-three-dots text-muted"></i>
+            </div>
+            <div class="bar-chart">
+                <div class="bar-group" th:each="stat : ${monthlyStats}">
+                    <div class="bar" th:style="'height:' + ${stat.percentage} + '%;'" th:attr="data-value=${stat.label}"></div>
+                    <span class="bar-label" th:text="${stat.month}">T1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <div class="card-title">Top Danh Mục</div>
+            <div class="cat-list">
+                <div class="cat-item" th:each="cat : ${topCategories}">
+                    <div class="cat-info">
+                        <span><i class="bi bi-activity"></i> [[${cat.name}]]</span>
+                        <span th:text="${cat.percent + '%'}">0%</span>
+                    </div>
+                    <div class="progress-bg">
+                        <div class="progress-fill" th:style="'width:' + ${cat.percent} + '%; background: var(--primary);'"></div>
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
+<<<<<<< HEAD
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="trend-badge trend-up"><i class="bi bi-graph-up"></i> +12.5%</div>
@@ -393,6 +478,57 @@
                 </div>
 
             </main>
+=======
+    <div class="grid-2-1">
+        <div class="card-box">
+            <div class="card-title">
+                Top Sản Phẩm Bán Chạy
+                <a th:href="@{/admin/products}" style="font-size: 13px; color: var(--primary); text-decoration: none;">Xem tất cả</a>
+            </div>
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Doanh số</th>
+                        <th style="text-align: right;">Tổng thu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${topProducts}">
+                        <td>
+                            <div class="product-info">
+                                <div class="product-img" th:style="'background: url(' + ${product.image} + ') center/cover;'"></div>
+                                <div>
+                                    <span class="product-name" th:text="${product.name}">Tên SP</span>
+                                    <span class="product-sub" th:text="'#' + ${product.sku}">#SKU</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-gray" th:text="${product.category}">Category</span></td>
+                        <td style="font-weight: 600;" th:text="${product.soldCount}">0</td>
+                        <td style="text-align: right; color: var(--primary); font-weight: 700;" 
+                            th:text="${#numbers.formatDecimal(product.totalRevenue, 0, 'COMMA', 0, 'POINT') + ' ₫'}">0 ₫</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-box">
+            <div class="card-title">Hoạt Động Gần Đây</div>
+            <div class="timeline">
+                <div class="timeline-item" th:each="activity : ${recentActivities}">
+                    <div class="timeline-dot" th:classappend="${activity.type == 'warning' ? 'dot-warning' : (activity.type == 'success' ? 'dot-success' : '')}"></div>
+                    <div class="timeline-content">
+                        <p th:utext="${activity.message}">Nội dung thông báo</p>
+                        <span class="timeline-time" th:text="${activity.timeAgo}">Vừa xong</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
         </div>
     </div>
     

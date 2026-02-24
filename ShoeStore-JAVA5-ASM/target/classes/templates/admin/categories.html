@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
+<<<<<<< HEAD
         /* --- THEME CONFIGURATION (Đồng bộ Dashboard) --- */
         :root {
             --bg-body: #050505;
@@ -20,9 +21,17 @@
             --text-muted: #a1a1aa;
             --border-glass: rgba(255, 255, 255, 0.08);
             --radius: 6px;
+=======
+        /* GIỮ NGUYÊN TOÀN BỘ CSS CỦA BẠN */
+        :root {
+            --primary: #4f46e5; --primary-light: #e0e7ff; --secondary: #64748b;
+            --bg-body: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a;
+            --text-light: #64748b; --success: #10b981; --danger: #ef4444;
+            --radius: 16px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
+<<<<<<< HEAD
         
         body {
             font-family: 'Poppins', sans-serif;
@@ -142,6 +151,36 @@
         }
         .btn-cancel:hover { background: #333; }
 
+=======
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); font-size: 14px; }
+        .admin-wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; width: calc(100% - 280px); }
+        .content-body { padding: 30px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .btn-primary-custom {
+            background: var(--primary); color: white; border: none; padding: 10px 20px;
+            border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            text-decoration: none; /* Thêm để nút <a> trông giống button */
+        }
+        .btn-primary-custom:hover { transform: translateY(-2px); filter: brightness(1.1); color: white; }
+        .filter-section {
+            background: var(--bg-card); padding: 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin-bottom: 24px; display: flex; gap: 15px; align-items: center;
+        }
+        .search-input { flex-grow: 1; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none; }
+        .card-table { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .table-custom { width: 100%; border-collapse: collapse; }
+        .table-custom th { background: #f8fafc; text-align: left; padding: 16px; color: var(--text-light); font-weight: 600; text-transform: uppercase; font-size: 12px; }
+        .table-custom td { padding: 16px; border-bottom: 1px solid #f1f5f9; }
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-active { background: #dcfce7; color: #15803d; }
+        .badge-hidden { background: #fee2e2; color: #991b1b; }
+        .action-btns { display: flex; gap: 8px; }
+        .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: white; color: var(--text-main); text-decoration: none; }
+        .btn-edit:hover { background: var(--primary-light); color: var(--primary); }
+        .btn-delete:hover { background: #fee2e2; color: var(--danger); }
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
     </style>
 </head>
 <body>
@@ -154,6 +193,7 @@
             
             <header th:replace="~{admin/fragments/header :: header}"></header>
 
+<<<<<<< HEAD
             <div class="page-header" style="margin-top: 20px;">
                 <div>
                     <span class="sub-title"><i class="bi bi-tags"></i> QUẢN LÝ DANH MỤC</span>
@@ -168,6 +208,17 @@
                 <div class="search-box">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Tìm kiếm danh mục...">
+=======
+            <main class="content-body">
+                <div class="page-header">
+                    <div>
+                        <h2 style="font-size: 24px; font-weight: 700;">Quản Lý Loại Sản Phẩm</h2>
+                        <p class="text-muted">Phân loại sản phẩm giúp khách hàng tìm kiếm dễ dàng hơn.</p>
+                    </div>
+                    <a th:href="@{/admin/categories/add}" class="btn-primary-custom">
+                        <i class="bi bi-plus-lg"></i> Thêm Loại Mới
+                    </a>
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
                 </div>
                 
                 <select class="search-input" style="width: 200px; flex-grow: 0;">
@@ -227,6 +278,7 @@
                 </table>
             </div>
 
+<<<<<<< HEAD
         </div>
     </div>
 
@@ -275,5 +327,51 @@
             }
         }
     </script>
+=======
+                <div class="card-table">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">ID</th>
+                                <th>Tên Loại Sản Phẩm</th>
+                                <th>Đường dẫn (Slug)</th>
+                                <th>Trạng Thái</th>
+                                <th style="text-align: right;">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="cate : ${list}">
+                                <td style="font-weight: 600;" th:text="${'#' + cate.id}">#ID</td>
+                                <td><span style="font-weight: 600;" th:text="${cate.name}">Tên Loại</span></td>
+                                <td class="text-muted" th:text="${cate.slug}">slug-duong-dan</td>
+                                <td>
+                                    <span th:if="${cate.active}" class="badge badge-active">Hiển thị</span>
+                                    <span th:unless="${cate.active}" class="badge badge-hidden">Đang ẩn</span>
+                                </td>
+                                <td>
+                                    <div class="action-btns" style="justify-content: flex-end;">
+                                        <a th:href="@{/admin/categories/edit/{id}(id=${cate.id})}" class="btn-icon btn-edit" title="Sửa">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a th:href="@{/admin/categories/delete/{id}(id=${cate.id})}" 
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa loại này?')"
+                                           class="btn-icon btn-delete" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(list)}">
+                                <td colspan="5" style="text-align: center; padding: 30px; color: var(--text-light);">
+                                    Chưa có dữ liệu loại sản phẩm nào.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+>>>>>>> 783ef969c5a11816f664c0b3f699f75614b5da78
 </body>
 </html>
