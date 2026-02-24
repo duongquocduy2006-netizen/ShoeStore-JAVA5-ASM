@@ -10,18 +10,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "categories")
 public class Category {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	@Column(columnDefinition = "nvarchar(255)")
-	String name;
-	String slug;
-	boolean active;
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    
+    @Column(name = "category_name", columnDefinition = "nvarchar(100)")
+    private String name;
+    
+    // Dùng category_code trong DB để lưu slug của link web
+    @Column(name = "category_code", length = 20, unique = true)
+    private String slug;
+    
+    // JPA tự động chuyển đổi status (INT trong DB: 1 hoặc 0) sang boolean
+    @Column(name = "status")
+    private boolean active;
 }
