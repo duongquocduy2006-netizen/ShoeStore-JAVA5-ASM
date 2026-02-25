@@ -41,6 +41,9 @@ public class Product {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
+    @Column(name = "brand_name")
+    private String brandName;
+
     private Integer status;
 
     @Column(name = "created_at")
@@ -54,7 +57,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude // KHÔNG tính cái này vào hashCode
-    @ToString.Exclude          // KHÔNG in cái này ra để tránh treo máy
+    @ToString.Exclude // KHÔNG in cái này ra để tránh treo máy
     private Set<ProductVariant> variants;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
