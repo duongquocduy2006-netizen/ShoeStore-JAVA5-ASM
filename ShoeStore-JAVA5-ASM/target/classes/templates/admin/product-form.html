@@ -307,7 +307,10 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="form-label">Màu sắc (Color)</label>
+                                    <label class="form-label">Màu sắc (Color) <a href="#"
+                                            onclick="deleteSelectedColor()"
+                                            style="float: right; color: var(--accent-red); font-size: 12px; text-decoration: none;"><i
+                                                class="bi bi-trash"></i> Xóa màu này</a></label>
                                     <select name="colorId" id="colorSelect" class="form-control"
                                         onchange="toggleNewColorInput()">
                                         <option value="">-- Chọn Màu --</option>
@@ -391,23 +394,7 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label">Thương hiệu</label>
-                                <select name="brandName" class="form-control">
-                                    <option value="">-- Chọn thương hiệu --</option>
-                                    <option value="Nike" th:selected="${product.brandName == 'Nike'}">Nike</option>
-                                    <option value="Adidas" th:selected="${product.brandName == 'Adidas'}">Adidas
-                                    </option>
-                                    <option value="Puma" th:selected="${product.brandName == 'Puma'}">Puma</option>
-                                    <option value="New Balance" th:selected="${product.brandName == 'New Balance'}">New
-                                        Balance</option>
-                                    <option value="Vans" th:selected="${product.brandName == 'Vans'}">Vans</option>
-                                    <option value="Converse" th:selected="${product.brandName == 'Converse'}">Converse
-                                    </option>
-                                    <option value="Biti's" th:selected="${product.brandName == 'Biti''s'}">Biti's
-                                    </option>
-                                </select>
-                            </div>
+
 
                             <div class="form-group">
                                 <label class="form-label">Trạng thái</label>
@@ -434,6 +421,18 @@
                 customInput.style.display = 'none';
                 customInput.required = false;
                 customInput.value = '';
+            }
+        }
+
+        function deleteSelectedColor() {
+            var selectObj = document.getElementById('colorSelect');
+            var colorId = selectObj.value;
+            if (colorId && colorId != '-1') {
+                if (confirm("Xếp có chắc chắn muốn XÓA VĨNH VIỄN màu này khỏi hệ thống không? Tất cả sản phẩm đang dùng màu này sẽ bị ảnh hưởng.")) {
+                    window.location.href = '/admin/colors/delete/' + colorId;
+                }
+            } else {
+                alert("Vui lòng chọn một màu cụ thể trong danh sách để xóa!");
             }
         }
 

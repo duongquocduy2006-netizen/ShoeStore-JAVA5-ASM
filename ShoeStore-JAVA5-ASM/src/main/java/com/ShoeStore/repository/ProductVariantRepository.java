@@ -7,5 +7,5 @@ import com.ShoeStore.model.ProductVariant;
 
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Integer> {
-
+    java.util.List<ProductVariant> findByProductId(Integer productId);
 }

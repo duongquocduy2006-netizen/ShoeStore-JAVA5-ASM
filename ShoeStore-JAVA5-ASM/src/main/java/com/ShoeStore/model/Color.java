@@ -10,5 +10,6 @@ public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "color_name", columnDefinition = "NVARCHAR(255)")
     private String colorName;
 }

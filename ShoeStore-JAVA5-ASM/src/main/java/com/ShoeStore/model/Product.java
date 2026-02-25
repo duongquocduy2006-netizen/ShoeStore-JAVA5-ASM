@@ -41,9 +41,6 @@ public class Product {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
-    @Column(name = "brand_name")
-    private String brandName;
-
     private Integer status;
 
     @Column(name = "created_at")

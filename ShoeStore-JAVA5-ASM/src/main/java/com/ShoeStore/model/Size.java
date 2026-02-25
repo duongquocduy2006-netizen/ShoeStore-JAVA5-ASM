@@ -11,6 +11,6 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "size_name")
+    @Column(name = "size_name", columnDefinition = "NVARCHAR(255)")
     private String sizeName;
 }

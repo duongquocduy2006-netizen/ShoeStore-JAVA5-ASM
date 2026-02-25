@@ -204,11 +204,7 @@
                                 th:text="${product.category != null ? product.category.name : 'Chưa phân loại'}">Nike
                             </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label">Thương hiệu</div>
-                            <div class="info-value"
-                                th:text="${product.brandName != null ? product.brandName : 'Chưa cập nhật'}">Nike</div>
-                        </div>
+
                         <div class="info-row">
                             <div class="info-label">Trạng thái</div>
                             <div class="info-value" th:text="${product.status == 1 ? 'Đang bán' : 'Tạm ẩn'}">Đang bán

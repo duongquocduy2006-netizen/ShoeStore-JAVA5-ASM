@@ -104,12 +104,7 @@ public class AdminProductManager {
             @RequestParam(value = "colorId", required = false) Integer colorId,
             @RequestParam(value = "newColorName", required = false) String newColorName,
             @RequestParam(value = "price", required = false) BigDecimal price,
-            @RequestParam(value = "quantity", required = false) Integer quantity,
-            @RequestParam(value = "brandName", required = false) String brandName) {
-
-        if (brandName != null && !brandName.isEmpty()) {
-            product.setBrandName(brandName);
-        }
+            @RequestParam(value = "quantity", required = false) Integer quantity) {
 
         // 1. Sinh mã SKU tự động
         if (product.getProductCode() == null || product.getProductCode().isEmpty()) {
@@ -182,8 +177,11 @@ public class AdminProductManager {
 
                 if (size != null && color != null) {
                     ProductVariant variant = null;
-                    if (savedProduct.getVariants() != null && !savedProduct.getVariants().isEmpty()) {
-                        variant = savedProduct.getVariants().iterator().next();
+                    List<ProductVariant> existingVariants = productVariantRepository
+                            .findByProductId(savedProduct.getId());
+                    if (existingVariants != null && !existingVariants.isEmpty()) {
+                        variant = existingVariants.get(0); // Update the FIRST existing variant instead of making a
+                                                           // duplicate
                     } else {
                         variant = new ProductVariant();
                     }
@@ -277,5 +275,27 @@ public class AdminProductManager {
             System.err.println("LỖI SET ẢNH CHÍNH: " + e.getMessage());
         }
         return "redirect:/admin/products/edit/" + productId;
+    }
+
+    @Transactional
+    @GetMapping("/colors/delete/{id}")
+    public String deleteColor(@PathVariable("id") Integer id) {
+        try {
+            // Must delete any variants that use this color first, otherwise foreign key
+            // constraints fail
+            List<ProductVariant> variants = productVariantRepository.findAll();
+            for (ProductVariant v : variants) {
+                if (v.getColor() != null && v.getColor().getId().equals(id)) {
+                    productVariantRepository.delete(v);
+                }
+            }
+            colorRepository.deleteById(id);
+        } catch (Exception e) {
+            System.err.println("LỖI XÓA MÀU: " + e.getMessage());
+        }
+        // Instead of returning to a generic page, we redirect back to the generic
+        // products dashboard
+        // A smarter approach would use AJAX, but this works fine for an admin panel.
+        return "redirect:/admin/products/create";
     }
 }
