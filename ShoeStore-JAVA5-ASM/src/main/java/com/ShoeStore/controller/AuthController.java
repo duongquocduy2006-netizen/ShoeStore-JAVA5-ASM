@@ -30,6 +30,11 @@ public class AuthController {
         return "register";
     }
 
+    @GetMapping("/logout-success")
+    public String logoutSuccess() {
+        return "logout";
+    }
+
     // --- POST /login is handled by Spring Security ---
 
     // ----- POST: Xử lý Đăng Ký -----
